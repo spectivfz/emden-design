@@ -1105,14 +1105,15 @@
       new Promise(r => video.addEventListener('canplay', r, { once: true })),
       new Promise(r => setTimeout(r, 400)),
     ]);
-    const firstBm = await createImageBitmap(video, { resizeWidth: 1920, resizeQuality: 'high' });
+    const firstBm = await createImageBitmap(video).catch(() => null);
+    if (!firstBm) return;
     frames.push({ time: 0, bm: firstBm });
     frameReady = true;
     sizeCanvas();
     heroCanvas.style.display = 'block';
     drawCover(firstBm);
 
-    video.playbackRate = 4.0;
+    video.playbackRate = Math.min(4.0, video.playbackRate !== undefined ? 4.0 : 1.0);
     video.currentTime  = 0;
     let lastCapTime = -999;
 
@@ -1122,7 +1123,7 @@
         if (t - lastCapTime >= FRAME_INTERVAL * 0.85) {
           lastCapTime = t;
           const captureT = t;
-          createImageBitmap(video, { resizeWidth: 1920, resizeQuality: 'high' })
+          createImageBitmap(video)
             .then(bm => {
               frames.push({ time: captureT, bm });
               if (loadFill) loadFill.style.width = (Math.min(1, captureT / vidDur) * 100) + '%';
@@ -1163,13 +1164,19 @@
   }, { passive: true });
 
   (async function boot() {
-    if (video.readyState >= 4) { extractFrames(); }
-    else {
-      video.addEventListener('canplaythrough', extractFrames, { once: true });
-      video.addEventListener('loadedmetadata', () => {
-        if (video.readyState >= 4) extractFrames();
-      }, { once: true });
+    let started = false;
+    function tryExtract() {
+      if (started) return;
+      started = true;
+      extractFrames();
     }
+    if (video.readyState >= 2) { tryExtract(); return; }
+    video.addEventListener('canplaythrough', tryExtract, { once: true });
+    video.addEventListener('loadeddata',     tryExtract, { once: true });
+    // iOS won't buffer until user interaction — start on first touch/scroll
+    window.addEventListener('touchstart', tryExtract, { once: true, passive: true });
+    window.addEventListener('scroll',     tryExtract, { once: true, passive: true });
+    setTimeout(tryExtract, 3000); // hard fallback
   })();
 
   // ─── REVEAL (.reveal — new sections) ─────────────────────
