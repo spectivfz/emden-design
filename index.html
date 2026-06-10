@@ -710,6 +710,8 @@
       .disc-head { flex-direction: column; gap: 20px; }
       .disc-head p { max-width: 100%; }
       .disc-cards { grid-template-columns: 1fr 1fr; }
+      .disc-card { will-change: auto; transform-style: flat; transition: border-color .5s; }
+      .c-body { transform: none; }
       .about-grid { grid-template-columns: 1fr; }
       .stats { gap: 28px; }
       .site-footer-new { flex-direction: column; align-items: flex-start; }
@@ -1287,15 +1289,17 @@
     probe.onload  = () => img.style.backgroundImage = `url(${url})`;
     probe.onerror = () => img.style.background = `linear-gradient(140deg,${a},${b})`;
     probe.src = url;
-    card.addEventListener('mousemove', e => {
-      const r  = card.getBoundingClientRect();
-      const px = (e.clientX - r.left) / r.width  - .5;
-      const py = (e.clientY - r.top)  / r.height - .5;
-      card.style.transform = `perspective(900px) rotateY(${px*9}deg) rotateX(${-py*9}deg) translateY(-6px)`;
-    });
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = 'perspective(900px) rotateY(0) rotateX(0)';
-    });
+    if (!isMobile) {
+      card.addEventListener('mousemove', e => {
+        const r  = card.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width  - .5;
+        const py = (e.clientY - r.top)  / r.height - .5;
+        card.style.transform = `perspective(900px) rotateY(${px*9}deg) rotateX(${-py*9}deg) translateY(-6px)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(900px) rotateY(0) rotateX(0)';
+      });
+    }
   });
 
   // ─── GALLERY CAPTIONS ─────────────────────────────────────
