@@ -672,14 +672,13 @@
     /* ─── MOBILE HERO STATIC ─────────────────────────────── */
     @media (max-width: 768px) {
       #hero-scroll { height: 100vh; }
-      #hero-bg {
-        background-image: url('./Graphic%20Design/2.jpg');
-        filter: none;
-      }
+      #hero-bg { background-image: none; }
+      #hero-mobile-video { display: block !important; }
       #hero-bg::after {
         content: '';
-        position: absolute; inset: 0;
+        position: absolute; inset: 0; z-index: 1;
         background: linear-gradient(to bottom, rgba(8,7,10,0.55) 0%, rgba(8,7,10,0.1) 50%, rgba(8,7,10,0.7) 100%);
+        pointer-events: none;
       }
       #hero-canvas, #hero-load-bar, #h-prog-track, #scroll-hint { display: none !important; }
       #hl-title { opacity: 1 !important; }
@@ -764,6 +763,11 @@
     <div id="hero-pin">
 
       <div id="hero-bg"></div>
+
+      <video id="hero-mobile-video"
+             src="./Mobile%20Hero.mp4"
+             autoplay muted loop playsinline webkit-playsinline
+             style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"></video>
 
       <video id="hero-video"
              src="./About/Scroll%20Motion%20Video_10.06.mp4"
