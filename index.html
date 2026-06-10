@@ -1116,16 +1116,30 @@
   const frames = [];
   let frameReady = false, vidDur = 0;
 
+  // Mobile: batch draws via rAF and skip if same frame
+  let mobileLastIdx = -1, mobilePending = false, mobilePendingP = 0;
+
   function showFrame(p) {
     if (!frameReady) return;
-    const gs = Math.max(0, 1 - p / 0.008);
-    heroCanvas.style.filter = gs > 0 ? `grayscale(${gs})` : 'none';
     if (isMobile) {
-      const idx = Math.min(Math.floor(p * FRAME_COUNT), FRAME_COUNT - 1);
-      const img = jpegFrames[idx];
-      if (img && img.complete && img.naturalWidth) drawCoverImg(img);
+      mobilePendingP = p;
+      if (mobilePending) return;
+      mobilePending = true;
+      requestAnimationFrame(() => {
+        mobilePending = false;
+        const idx = Math.min(Math.floor(mobilePendingP * FRAME_COUNT), FRAME_COUNT - 1);
+        if (idx === mobileLastIdx) return;
+        mobileLastIdx = idx;
+        const img = jpegFrames[idx];
+        if (!img || !img.complete || !img.naturalWidth) return;
+        const gs = Math.max(0, 1 - mobilePendingP / 0.008);
+        heroCanvas.style.filter = gs > 0 ? `grayscale(${gs})` : 'none';
+        drawCoverImg(img);
+      });
     } else {
       if (!frames.length) return;
+      const gs = Math.max(0, 1 - p / 0.008);
+      heroCanvas.style.filter = gs > 0 ? `grayscale(${gs})` : 'none';
       const t = p * vidDur;
       let lo = 0, hi = frames.length - 1;
       while (lo < hi) { const mid = (lo + hi + 1) >> 1; if (frames[mid].time <= t) lo = mid; else hi = mid - 1; }
