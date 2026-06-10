@@ -669,6 +669,14 @@
       .disc-cards { grid-template-columns: repeat(3, 1fr); }
     }
 
+    /* ─── MOBILE HERO STATIC ─────────────────────────────── */
+    @media (max-width: 768px) {
+      #hero-scroll { height: 100vh; }
+      #hero-bg { background-image: url('./Graphic%20Design/2.jpg'); filter: none; }
+      #hero-canvas, #hero-load-bar, #h-prog-track, #scroll-hint { display: none !important; }
+      #hl-title { opacity: 1 !important; }
+    }
+
     /* ─── MOBILE ≤640px ───────────────────────────────────── */
     @media (max-width: 640px) {
       #nav { padding: 18px 24px; }
@@ -1217,9 +1225,7 @@
     showFrame(heroProgress);
   }, { passive: true });
 
-  if (isMobile) {
-    preloadJpegFrames();
-  } else {
+  if (!isMobile) {
   (async function boot() {
     let started = false;
     function tryExtract() {
