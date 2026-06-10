@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Branding — Emden Design</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{--night:#08070a;--deep:#100f13;--lift:#18161c;--sand:#c0ad94;--gold:#b0843c;--amber:#cb9a4e;--ivory:#f0ebe2}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--night);color:var(--ivory);font-family:'Jost',sans-serif;font-weight:300;-webkit-font-smoothing:antialiased;overflow-x:hidden;cursor:none}
+    #cur-dot{position:fixed;width:5px;height:5px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform 0.15s}
+    #cur-ring{position:fixed;width:34px;height:34px;border:1px solid rgba(176,132,60,0.45);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width 0.4s cubic-bezier(.16,1,.3,1),height 0.4s cubic-bezier(.16,1,.3,1),border-color 0.25s}
+    body.on-link #cur-ring{width:56px;height:56px;border-color:var(--gold)}
+    #nav{position:fixed;top:0;left:0;right:0;z-index:800;padding:28px 56px;display:flex;align-items:center;justify-content:space-between;transition:background 0.55s ease,padding 0.4s ease,border-color 0.55s;border-bottom:1px solid transparent}
+    #nav.scrolled{background:rgba(8,7,10,0.88);backdrop-filter:blur(14px);padding:16px 56px;border-color:rgba(192,173,148,0.07)}
+    .nav-logo{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:1.25rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--ivory);text-decoration:none}
+    .nav-links{display:flex;gap:44px;list-style:none}
+    .nav-links a{font-weight:200;font-size:0.67rem;letter-spacing:0.28em;text-transform:uppercase;color:#fff;text-decoration:none;transition:color 0.25s}
+    .nav-links a:hover{color:var(--ivory)}
+    .nav-enquire{font-weight:200;font-size:0.67rem;letter-spacing:0.24em;text-transform:uppercase;color:#fff;background:var(--gold);padding:11px 26px;text-decoration:none;transition:background 0.25s}
+    .nav-enquire:hover{background:var(--amber)}
+    .nav-dropdown{position:relative}
+    .nav-drop-menu{position:absolute;top:100%;left:50%;transform:translateX(-50%) translateY(-6px);background:rgba(8,7,10,0.97);backdrop-filter:blur(18px);border:1px solid rgba(192,173,148,0.10);padding:20px 0 14px;min-width:216px;opacity:0;visibility:hidden;pointer-events:none;transition:opacity 0.25s ease,transform 0.3s cubic-bezier(.16,1,.3,1),visibility 0s linear 0.25s}
+    .nav-dropdown:hover .nav-drop-menu{opacity:1;visibility:visible;pointer-events:auto;transform:translateX(-50%) translateY(0);transition:opacity 0.25s ease,transform 0.3s cubic-bezier(.16,1,.3,1),visibility 0s linear 0s}
+    .nav-drop-menu a{display:block;padding:11px 28px;font-weight:200;font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--sand);text-decoration:none;transition:color 0.2s,padding-left 0.25s cubic-bezier(.16,1,.3,1)}
+    .nav-drop-menu a:hover{color:var(--ivory);padding-left:36px}
+    .nav-arrow{display:inline-block;margin-left:5px;font-size:0.5rem;opacity:0.45;transition:transform 0.25s}
+    .nav-dropdown:hover .nav-arrow{transform:rotate(180deg)}
+    .rev{opacity:0;transform:translateY(26px);transition:opacity 0.8s cubic-bezier(.16,1,.3,1),transform 0.8s cubic-bezier(.16,1,.3,1)}
+    .rev.in{opacity:1;transform:none}
+    .rev.d1{transition-delay:0.12s}.rev.d2{transition-delay:0.24s}.rev.d3{transition-delay:0.36s}
+    .eyebrow-bar{font-weight:200;font-size:0.65rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:14px;margin-bottom:18px}
+    .eyebrow-bar::before{content:'';display:inline-block;width:32px;height:1px;background:var(--gold);opacity:0.6}
+    /* HERO — typographic dark with gold accent */
+    .page-hero{position:relative;height:100vh;overflow:hidden;display:flex;align-items:flex-end}
+    .parallax-container{position:absolute;inset:-18%;will-change:transform}
+    .parallax-container img{width:100%;height:100%;object-fit:cover;object-position:center 50%;filter:grayscale(1)}
+    .page-hero-gold{position:absolute;inset:0;z-index:1;background:rgba(176,132,60,0.28);mix-blend-mode:color;pointer-events:none}
+    .page-hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,7,10,0.6) 0%,rgba(8,7,10,0.2) 45%,rgba(8,7,10,0.2) 50%,rgba(8,7,10,0.95) 100%)}
+    .page-hero-grain{position:absolute;inset:0;pointer-events:none;opacity:0.035;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px 200px}
+    .page-hero-content{position:relative;z-index:2;padding:0 80px 100px;width:100%}
+    .page-hero-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(3.8rem,7vw,7.5rem);line-height:0.9;letter-spacing:-0.03em;color:var(--ivory);margin-bottom:28px}
+    .page-hero-title em{font-style:italic;color:var(--sand)}
+    .page-hero-sub{font-weight:200;font-size:1rem;line-height:1.7;color:rgba(240,235,226,0.65);max-width:480px}
+    .page-section{padding:120px 80px}
+    .page-section.alt{background:var(--deep)}
+    .sec-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+    .sec-grid-2.reverse{direction:rtl}
+    .sec-grid-2.reverse>*{direction:ltr}
+    .section-label{font-weight:200;font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+    .section-heading{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(2.2rem,3.5vw,3.6rem);letter-spacing:-0.025em;line-height:1.0;color:var(--ivory);margin-bottom:28px}
+    .section-heading em{font-style:italic;color:var(--sand)}
+    .section-body{font-weight:300;font-size:1rem;line-height:1.82;color:rgba(192,173,148,0.7);max-width:520px}
+    .section-body+.section-body{margin-top:20px}
+    .section-img{width:100%;height:540px;object-fit:cover}
+    .gold-rule{width:40px;height:1px;background:var(--gold);opacity:0.5;margin-bottom:28px}
+    /* BRAND SHOWCASE */
+    .brand-showcase{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:64px}
+    .brand-tile{aspect-ratio:1;background:var(--lift);display:flex;flex-direction:column;justify-content:flex-end;padding:36px;position:relative;overflow:hidden;transition:background 0.35s}
+    .brand-tile:hover{background:rgba(26,23,32,0.95)}
+    .brand-tile-bg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0.18;transition:opacity 0.4s,transform 0.7s cubic-bezier(.16,1,.3,1)}
+    .brand-tile:hover .brand-tile-bg{opacity:0.28;transform:scale(1.04)}
+    .brand-tile-num{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:3rem;color:rgba(176,132,60,0.15);line-height:1;margin-bottom:12px;position:relative;z-index:1}
+    .brand-tile-name{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:1.3rem;color:var(--ivory);position:relative;z-index:1}
+    .brand-tile-type{font-weight:200;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(192,173,148,0.45);margin-top:6px;position:relative;z-index:1}
+    .offerings-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;margin-top:64px}
+    .offering-item{padding:48px 44px;background:var(--lift);position:relative;overflow:hidden;transition:background 0.35s}
+    .offering-item:hover{background:rgba(26,23,32,0.95)}
+    .offering-item::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,var(--gold),transparent);transform:scaleX(0);transform-origin:left;transition:transform 0.5s cubic-bezier(.16,1,.3,1)}
+    .offering-item:hover::before{transform:scaleX(1)}
+    .offering-num{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:2.4rem;color:rgba(176,132,60,0.12);line-height:1;margin-bottom:16px}
+    .offering-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:1.5rem;color:var(--ivory);margin-bottom:12px}
+    .offering-desc{font-weight:200;font-size:0.85rem;line-height:1.75;color:rgba(192,173,148,0.55)}
+    .page-cta{background:var(--night);padding:160px 80px;text-align:center;border-top:1px solid rgba(192,173,148,0.06)}
+    .cta-heading{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(3rem,6vw,5.5rem);letter-spacing:-0.025em;line-height:0.9;color:var(--ivory);margin-bottom:36px}
+    .cta-heading em{font-style:italic;color:var(--sand)}
+    .cta-sub{font-weight:200;font-size:0.9rem;line-height:1.8;color:rgba(192,173,148,0.5);margin-bottom:60px}
+    .cta-btn{display:inline-flex;align-items:center;gap:14px;font-weight:200;font-size:0.68rem;letter-spacing:0.26em;text-transform:uppercase;color:var(--night);background:var(--gold);padding:18px 48px;text-decoration:none;transition:background 0.25s,transform 0.3s cubic-bezier(.16,1,.3,1)}
+    .cta-btn:hover{background:var(--amber);transform:translateY(-2px)}
+    .site-footer{background:var(--deep);border-top:1px solid rgba(192,173,148,0.07);padding:80px 80px 48px}
+    .ft-top{display:grid;grid-template-columns:1fr auto;gap:80px;align-items:start;padding-bottom:60px;border-bottom:1px solid rgba(192,173,148,0.06);margin-bottom:40px}
+    .ft-logo{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:1.35rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--ivory);text-decoration:none;display:block;margin-bottom:14px}
+    .ft-tagline{font-weight:200;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(192,173,148,0.28)}
+    .ft-nav{display:flex;gap:72px}
+    .ft-col{display:flex;flex-direction:column;gap:13px}
+    .ft-col-title{font-weight:200;font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(192,173,148,0.28);margin-bottom:6px}
+    .ft-col a{font-weight:200;font-size:0.74rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(192,173,148,0.48);text-decoration:none;transition:color 0.25s}
+    .ft-col a:hover{color:var(--sand)}
+    .ft-bottom{display:flex;align-items:center;justify-content:space-between}
+    .ft-copy{font-weight:200;font-size:0.62rem;letter-spacing:0.12em;color:rgba(192,173,148,0.2)}
+    .ft-social{display:flex;gap:28px}
+    .ft-social a{font-weight:200;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(192,173,148,0.28);text-decoration:none;transition:color 0.25s}
+    .ft-social a:hover{color:var(--sand)}
+    .nav-hamburger{display:none;flex-direction:column;justify-content:center;gap:6px;background:none;border:none;cursor:pointer;padding:8px;z-index:810;position:relative}
+    .nav-hamburger span{display:block;width:22px;height:1px;background:var(--ivory);transition:transform 0.35s cubic-bezier(.16,1,.3,1),opacity 0.2s;transform-origin:center}
+    .nav-hamburger.open span:first-child{transform:translateY(7px) rotate(45deg)}
+    .nav-hamburger.open span:last-child{transform:translateY(-7px) rotate(-45deg)}
+    #mobile-nav{position:fixed;inset:0;z-index:790;background:rgba(8,7,10,0.97);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px;opacity:0;visibility:hidden;pointer-events:none;transition:opacity 0.38s ease,visibility 0s linear 0.38s}
+    #mobile-nav.open{opacity:1;visibility:visible;pointer-events:auto;transition:opacity 0.38s ease,visibility 0s linear 0s}
+    .mn-link{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(1.9rem,8vw,2.8rem);letter-spacing:-0.01em;color:rgba(240,235,226,0.72);text-decoration:none;opacity:0;transform:translateY(14px);transition:opacity 0.4s cubic-bezier(.16,1,.3,1),transform 0.4s cubic-bezier(.16,1,.3,1),color 0.2s}
+    #mobile-nav.open .mn-link{opacity:1;transform:none}
+    #mobile-nav.open .mn-link:nth-child(2){transition-delay:0.04s}#mobile-nav.open .mn-link:nth-child(3){transition-delay:0.08s}#mobile-nav.open .mn-link:nth-child(4){transition-delay:0.12s}#mobile-nav.open .mn-link:nth-child(5){transition-delay:0.16s}#mobile-nav.open .mn-link:nth-child(6){transition-delay:0.20s}#mobile-nav.open .mn-link:nth-child(7){transition-delay:0.24s}#mobile-nav.open .mn-link:nth-child(8){transition-delay:0.28s}
+    .mn-link:hover{color:var(--gold)}
+    .mn-enquire{margin-top:6px;font-weight:200;font-size:0.68rem;letter-spacing:0.24em;text-transform:uppercase;color:var(--night);background:var(--gold);padding:14px 36px;text-decoration:none;opacity:0;transform:translateY(14px);transition:opacity 0.4s cubic-bezier(.16,1,.3,1),transform 0.4s cubic-bezier(.16,1,.3,1),background 0.2s}
+    #mobile-nav.open .mn-enquire{opacity:1;transform:none;transition-delay:0.32s}
+    .mn-enquire:hover{background:var(--amber)}
+    .mn-close{position:absolute;top:28px;right:28px;background:none;border:none;cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center}
+    .mn-close::before,.mn-close::after{content:'';position:absolute;width:20px;height:1px;background:var(--sand)}
+    .mn-close::before{transform:rotate(45deg)}.mn-close::after{transform:rotate(-45deg)}
+    @media(min-width:641px)and(max-width:1100px){
+      #nav{padding:22px 40px}#nav.scrolled{padding:14px 40px}.nav-links{gap:24px}
+      .page-section{padding:80px 40px}.page-cta{padding:120px 40px}
+      .site-footer{padding:60px 40px 40px}.ft-top{grid-template-columns:1fr;gap:40px}
+      .offerings-grid{grid-template-columns:1fr}.sec-grid-2{gap:48px}.section-img{height:400px}
+      .brand-showcase{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:640px){
+      #nav{padding:18px 24px}#nav.scrolled{padding:12px 24px}
+      .nav-links,.nav-enquire{display:none!important}.nav-hamburger{display:flex!important}
+      .page-hero-content{padding:0 24px 72px}.page-hero-sub{font-size:0.88rem;max-width:100%}
+      .page-section{padding:64px 24px}.sec-grid-2{grid-template-columns:1fr!important;gap:36px}
+      .section-img{height:260px}.section-body{max-width:100%}
+      .brand-showcase{grid-template-columns:1fr;gap:2px}
+      .offerings-grid{grid-template-columns:1fr!important;gap:2px;margin-top:40px}.offering-item{padding:32px 24px}
+      .page-cta{padding:88px 24px}.cta-sub{margin-bottom:40px;font-size:0.85rem}
+      .site-footer{padding:52px 24px 32px}.ft-top{grid-template-columns:1fr;gap:36px}
+      .ft-nav{flex-wrap:wrap;gap:36px}.ft-bottom{flex-direction:column;align-items:flex-start;gap:14px}
+    }
+  </style>
+</head>
+<body>
+  <div id="mobile-nav">
+    <button class="mn-close" id="mn-close" aria-label="Close menu"></button>
+    <a href="index.html" class="mn-link">Home</a>
+    <a href="about.html" class="mn-link">About</a>
+    <a href="fashion-design.html" class="mn-link">Fashion</a>
+    <a href="interior-design.html" class="mn-link">Interiors</a>
+    <a href="digital-design.html" class="mn-link">Digital</a>
+    <a href="product-design.html" class="mn-link">Product</a>
+    <a href="branding.html" class="mn-link">Branding</a>
+    <a href="contact.html" class="mn-link">Contact</a>
+    <a href="contact.html" class="mn-enquire">Enquire</a>
+  </div>
+  <div id="cur-dot"></div>
+  <div id="cur-ring"></div>
+
+  <nav id="nav">
+    <a href="index.html" class="nav-logo">Emden Design</a>
+    <ul class="nav-links">
+      <li><a href="about.html">About</a></li>
+      <li class="nav-dropdown">
+        <a href="index.html#services" style="color:var(--ivory)">Services <span class="nav-arrow">▾</span></a>
+        <div class="nav-drop-menu">
+          <a href="fashion-design.html">Fashion Design</a>
+          <a href="interior-design.html">Interior Design</a>
+          <a href="digital-design.html">Digital Design</a>
+          <a href="product-design.html">Product Design</a>
+          <a href="branding.html">Branding</a>
+        </div>
+      </li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <a href="contact.html" class="nav-enquire">Enquire</a>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span></button>
+  </nav>
+
+  <section class="page-hero">
+    <div class="parallax-container" id="hero-parallax">
+      <img src="./Branding/1.jpg" alt="Branding">
+    </div>
+    <div class="page-hero-gold"></div>
+    <div class="page-hero-overlay"></div>
+    <div class="page-hero-grain"></div>
+    <div class="page-hero-content">
+      <p class="eyebrow-bar rev">Our Disciplines</p>
+      <h1 class="page-hero-title rev d1">Brand<br><em>Identity</em></h1>
+      <p class="page-hero-sub rev d2">Identities built with the depth and permanence of the brands they define.</p>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="sec-grid-2">
+      <div>
+        <p class="section-label rev">The Discipline</p>
+        <div class="gold-rule rev d1"></div>
+        <h2 class="section-heading rev d1">Identity as<br><em>Architecture</em></h2>
+        <p class="section-body rev d2">
+          We approach brand identity the same way we approach space — as a system of relationships that must hold together under any light, at any scale, over any span of time.
+        </p>
+        <p class="section-body rev d2">
+          A brand built with us will not need reinvention in five years. It will deepen, like a well-worn object whose beauty grows with use.
+        </p>
+      </div>
+      <div class="rev d1">
+        <img class="section-img" src="./Branding/6.jpg" alt="Brand work">
+      </div>
+    </div>
+  </section>
+
+  <!-- BRAND SHOWCASE -->
+  <section class="page-section alt">
+    <p class="section-label rev">Selected Projects</p>
+    <h2 class="section-heading rev d1">Identity <em>Work</em></h2>
+    <div class="brand-showcase">
+      <div class="brand-tile rev">
+        <div class="brand-tile-bg" style="background-image:url('./Branding/2.jpg');opacity:0.5"></div>
+        <div class="brand-tile-num">01</div>
+        <div class="brand-tile-name">A/W 2024 Collection</div>
+        <div class="brand-tile-type">Campaign Identity</div>
+      </div>
+      <div class="brand-tile rev d1">
+        <div class="brand-tile-bg" style="background-image:url('./Branding/4.jpg');opacity:0.5"></div>
+        <div class="brand-tile-num">02</div>
+        <div class="brand-tile-name">A/W 2025 — Breathe</div>
+        <div class="brand-tile-type">Collection Identity</div>
+      </div>
+      <div class="brand-tile rev d2">
+        <div class="brand-tile-bg" style="background-image:url('./Branding/5.jpg');opacity:0.5"></div>
+        <div class="brand-tile-num">03</div>
+        <div class="brand-tile-name">Emden Editorial</div>
+        <div class="brand-tile-type">Campaign Direction</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div style="max-width:680px;margin-bottom:8px">
+      <p class="section-label rev">What We Offer</p>
+      <h2 class="section-heading rev d1">Our Branding <em>Services</em></h2>
+    </div>
+    <div class="offerings-grid">
+      <div class="offering-item rev">
+        <div class="offering-num">01</div>
+        <h3 class="offering-title">Brand Strategy</h3>
+        <p class="offering-desc">Positioning, naming, and narrative development — establishing the conceptual foundation that every subsequent design decision will express.</p>
+      </div>
+      <div class="offering-item rev d1">
+        <div class="offering-num">02</div>
+        <h3 class="offering-title">Visual Identity</h3>
+        <p class="offering-desc">Logo design, colour systems, typographic hierarchies, and iconography — each element chosen to communicate with precision and longevity.</p>
+      </div>
+      <div class="offering-item rev d2">
+        <div class="offering-num">03</div>
+        <h3 class="offering-title">Brand Guidelines</h3>
+        <p class="offering-desc">Comprehensive documentation of the brand system — enabling in-house teams and external partners to apply the identity with confidence and consistency.</p>
+      </div>
+      <div class="offering-item rev d3">
+        <div class="offering-num">04</div>
+        <h3 class="offering-title">Collateral Design</h3>
+        <p class="offering-desc">Stationery, packaging, print, and digital applications — the physical expression of brand identity that clients encounter in the real world.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-cta">
+    <p class="eyebrow-bar rev" style="justify-content:center">Identity</p>
+    <h2 class="cta-heading rev d1">Build a Brand<br><em>Built to Last</em></h2>
+    <p class="cta-sub rev d2">Let's create an identity as singular as the vision behind it.</p>
+    <a href="contact.html" class="cta-btn rev d3">
+      Begin the Process
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M1 7h12M8 2l5 5-5 5"/></svg>
+    </a>
+  </section>
+
+  <footer class="site-footer">
+    <div class="ft-top">
+      <div>
+        <a href="index.html" class="ft-logo">Emden Design</a>
+        <p class="ft-tagline">Design without limits</p>
+      </div>
+      <nav class="ft-nav">
+        <div class="ft-col">
+          <p class="ft-col-title">Services</p>
+          <a href="fashion-design.html">Fashion Design</a>
+          <a href="interior-design.html">Interior Design</a>
+          <a href="digital-design.html">Digital Design</a>
+          <a href="product-design.html">Product Design</a>
+          <a href="branding.html">Branding</a>
+        </div>
+        <div class="ft-col">
+          <p class="ft-col-title">Studio</p>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </nav>
+    </div>
+    <div class="ft-bottom">
+      <span class="ft-copy">© 2025 Emden Design. All rights reserved.</span>
+      <div class="ft-social"><a href="#">Instagram</a><a href="#">Houzz</a></div>
+    </div>
+  </footer>
+
+  <script>
+  const dot=document.getElementById('cur-dot'),ring=document.getElementById('cur-ring');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});
+  (function animRing(){rx+=(mx-rx)*0.13;ry+=(my-ry)*0.13;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);})();
+  document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('on-link'));el.addEventListener('mouseleave',()=>document.body.classList.remove('on-link'));});
+  const nav=document.getElementById('nav');
+  window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>40),{passive:true});
+  const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');}),{threshold:0.1});
+  document.querySelectorAll('.rev').forEach(el=>io.observe(el));
+  const heroPx=document.getElementById('hero-parallax');
+  window.addEventListener('scroll',()=>{if(heroPx)heroPx.style.transform=`translateY(${window.scrollY*0.3}px)`;},{passive:true});
+  // ─── HAMBURGER ─────────────────────────────────────────
+  (function() {
+    const hbg = document.getElementById('nav-hamburger');
+    const mNav = document.getElementById('mobile-nav');
+    const mClose = document.getElementById('mn-close');
+    function openNav() { mNav.classList.add('open'); hbg.classList.add('open'); hbg.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; }
+    function closeNav() { mNav.classList.remove('open'); hbg.classList.remove('open'); hbg.setAttribute('aria-expanded','false'); document.body.style.overflow=''; }
+    hbg.addEventListener('click', () => mNav.classList.contains('open') ? closeNav() : openNav());
+    mClose.addEventListener('click', closeNav);
+    mNav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
+  })();
+  </script>
+</body>
+</html>

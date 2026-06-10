@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — Emden Design</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{--night:#08070a;--deep:#100f13;--lift:#18161c;--sand:#c0ad94;--gold:#b0843c;--amber:#cb9a4e;--ivory:#f0ebe2}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--night);color:var(--ivory);font-family:'Jost',sans-serif;font-weight:300;-webkit-font-smoothing:antialiased;overflow-x:hidden;cursor:none}
+    #cur-dot{position:fixed;width:5px;height:5px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform 0.15s}
+    #cur-ring{position:fixed;width:34px;height:34px;border:1px solid rgba(176,132,60,0.45);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width 0.4s cubic-bezier(.16,1,.3,1),height 0.4s cubic-bezier(.16,1,.3,1),border-color 0.25s}
+    body.on-link #cur-ring{width:56px;height:56px;border-color:var(--gold)}
+    #nav{position:fixed;top:0;left:0;right:0;z-index:800;padding:28px 56px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,7,10,0.88);backdrop-filter:blur(14px);border-bottom:1px solid rgba(192,173,148,0.07);transition:background 0.55s ease,padding 0.4s ease}
+    #nav.scrolled{padding:16px 56px}
+    .nav-logo{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:1.25rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--ivory);text-decoration:none}
+    .nav-links{display:flex;gap:44px;list-style:none}
+    .nav-links a{font-weight:200;font-size:0.67rem;letter-spacing:0.28em;text-transform:uppercase;color:#fff;text-decoration:none;transition:color 0.25s}
+    .nav-links a:hover{color:var(--ivory)}
+    .nav-enquire{font-weight:200;font-size:0.67rem;letter-spacing:0.24em;text-transform:uppercase;color:#fff;background:var(--gold);padding:11px 26px;text-decoration:none;transition:background 0.25s}
+    .nav-enquire:hover{background:var(--amber)}
+    .nav-dropdown{position:relative}
+    .nav-drop-menu{position:absolute;top:100%;left:50%;transform:translateX(-50%) translateY(-6px);background:rgba(8,7,10,0.97);backdrop-filter:blur(18px);border:1px solid rgba(192,173,148,0.10);padding:20px 0 14px;min-width:216px;opacity:0;visibility:hidden;pointer-events:none;transition:opacity 0.25s ease,transform 0.3s cubic-bezier(.16,1,.3,1),visibility 0s linear 0.25s}
+    .nav-dropdown:hover .nav-drop-menu{opacity:1;visibility:visible;pointer-events:auto;transform:translateX(-50%) translateY(0);transition:opacity 0.25s ease,transform 0.3s cubic-bezier(.16,1,.3,1),visibility 0s linear 0s}
+    .nav-drop-menu a{display:block;padding:11px 28px;font-weight:200;font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--sand);text-decoration:none;transition:color 0.2s,padding-left 0.25s cubic-bezier(.16,1,.3,1)}
+    .nav-drop-menu a:hover{color:var(--ivory);padding-left:36px}
+    .nav-arrow{display:inline-block;margin-left:5px;font-size:0.5rem;opacity:0.45;transition:transform 0.25s}
+    .nav-dropdown:hover .nav-arrow{transform:rotate(180deg)}
+    .rev{opacity:0;transform:translateY(26px);transition:opacity 0.8s cubic-bezier(.16,1,.3,1),transform 0.8s cubic-bezier(.16,1,.3,1)}
+    .rev.in{opacity:1;transform:none}
+    .rev.d1{transition-delay:0.12s}.rev.d2{transition-delay:0.24s}.rev.d3{transition-delay:0.36s}.rev.d4{transition-delay:0.48s}
+    .eyebrow-bar{font-weight:200;font-size:0.65rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:14px;margin-bottom:18px}
+    .eyebrow-bar::before{content:'';display:inline-block;width:32px;height:1px;background:var(--gold);opacity:0.6}
+    /* CONTACT HERO */
+    .contact-hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;padding-top:120px}
+    .contact-hero-left{padding:80px 80px 80px;display:flex;flex-direction:column;justify-content:center}
+    .contact-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(3.4rem,5.5vw,6rem);line-height:0.88;letter-spacing:-0.03em;color:var(--ivory);margin-bottom:40px}
+    .contact-title em{font-style:italic;color:var(--sand)}
+    .contact-tagline{font-weight:300;font-size:1rem;line-height:1.82;color:rgba(192,173,148,0.65);max-width:440px;margin-bottom:56px}
+    .contact-direct{display:flex;flex-direction:column;gap:24px}
+    .contact-direct-item{display:flex;flex-direction:column;gap:6px}
+    .contact-direct-label{font-weight:200;font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(192,173,148,0.35)}
+    .contact-direct-value{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:1.25rem;letter-spacing:0.02em;color:var(--gold);text-decoration:none;transition:color 0.25s}
+    .contact-direct-value:hover{color:var(--amber)}
+    /* FORM SIDE */
+    .contact-hero-right{background:var(--deep);padding:80px 80px;display:flex;flex-direction:column;justify-content:center;border-left:1px solid rgba(192,173,148,0.06)}
+    .form-heading{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:1.8rem;color:var(--ivory);margin-bottom:40px}
+    .form-group{margin-bottom:28px}
+    .form-label{display:block;font-weight:200;font-size:0.62rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(192,173,148,0.45);margin-bottom:10px}
+    .form-input,.form-textarea,.form-select{
+      width:100%;background:transparent;
+      border:none;border-bottom:1px solid rgba(192,173,148,0.15);
+      padding:10px 0;color:var(--ivory);font-family:'Jost',sans-serif;font-weight:300;font-size:0.92rem;
+      outline:none;transition:border-color 0.25s;
+      -webkit-appearance:none;appearance:none;
+    }
+    .form-input:focus,.form-textarea:focus,.form-select:focus{border-color:var(--gold)}
+    .form-input::placeholder,.form-textarea::placeholder{color:rgba(192,173,148,0.2);font-weight:200}
+    .form-textarea{resize:none;height:100px;padding-top:8px}
+    .form-select{background:transparent;color:rgba(192,173,148,0.4);cursor:pointer}
+    .form-select option{background:var(--deep);color:var(--ivory)}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+    .form-submit{
+      display:inline-flex;align-items:center;gap:14px;
+      font-weight:200;font-size:0.68rem;letter-spacing:0.26em;text-transform:uppercase;
+      color:var(--night);background:var(--gold);border:none;cursor:pointer;
+      padding:18px 48px;margin-top:12px;
+      transition:background 0.25s,transform 0.3s cubic-bezier(.16,1,.3,1);font-family:'Jost',sans-serif;
+    }
+    .form-submit:hover{background:var(--amber);transform:translateY(-2px)}
+    /* FOOTER */
+    .site-footer{background:var(--deep);border-top:1px solid rgba(192,173,148,0.07);padding:80px 80px 48px}
+    .ft-top{display:grid;grid-template-columns:1fr auto;gap:80px;align-items:start;padding-bottom:60px;border-bottom:1px solid rgba(192,173,148,0.06);margin-bottom:40px}
+    .ft-logo{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:1.35rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--ivory);text-decoration:none;display:block;margin-bottom:14px}
+    .ft-tagline{font-weight:200;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(192,173,148,0.28)}
+    .ft-nav{display:flex;gap:72px}
+    .ft-col{display:flex;flex-direction:column;gap:13px}
+    .ft-col-title{font-weight:200;font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(192,173,148,0.28);margin-bottom:6px}
+    .ft-col a{font-weight:200;font-size:0.74rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(192,173,148,0.48);text-decoration:none;transition:color 0.25s}
+    .ft-col a:hover{color:var(--sand)}
+    .ft-bottom{display:flex;align-items:center;justify-content:space-between}
+    .ft-copy{font-weight:200;font-size:0.62rem;letter-spacing:0.12em;color:rgba(192,173,148,0.2)}
+    .ft-social{display:flex;gap:28px}
+    .ft-social a{font-weight:200;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(192,173,148,0.28);text-decoration:none;transition:color 0.25s}
+    .ft-social a:hover{color:var(--sand)}
+    .nav-hamburger{display:none;flex-direction:column;justify-content:center;gap:6px;background:none;border:none;cursor:pointer;padding:8px;z-index:810;position:relative}
+    .nav-hamburger span{display:block;width:22px;height:1px;background:var(--ivory);transition:transform 0.35s cubic-bezier(.16,1,.3,1),opacity 0.2s;transform-origin:center}
+    .nav-hamburger.open span:first-child{transform:translateY(7px) rotate(45deg)}
+    .nav-hamburger.open span:last-child{transform:translateY(-7px) rotate(-45deg)}
+    #mobile-nav{position:fixed;inset:0;z-index:790;background:rgba(8,7,10,0.97);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px;opacity:0;visibility:hidden;pointer-events:none;transition:opacity 0.38s ease,visibility 0s linear 0.38s}
+    #mobile-nav.open{opacity:1;visibility:visible;pointer-events:auto;transition:opacity 0.38s ease,visibility 0s linear 0s}
+    .mn-link{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(1.9rem,8vw,2.8rem);letter-spacing:-0.01em;color:rgba(240,235,226,0.72);text-decoration:none;opacity:0;transform:translateY(14px);transition:opacity 0.4s cubic-bezier(.16,1,.3,1),transform 0.4s cubic-bezier(.16,1,.3,1),color 0.2s}
+    #mobile-nav.open .mn-link{opacity:1;transform:none}
+    #mobile-nav.open .mn-link:nth-child(2){transition-delay:0.04s}#mobile-nav.open .mn-link:nth-child(3){transition-delay:0.08s}#mobile-nav.open .mn-link:nth-child(4){transition-delay:0.12s}#mobile-nav.open .mn-link:nth-child(5){transition-delay:0.16s}#mobile-nav.open .mn-link:nth-child(6){transition-delay:0.20s}#mobile-nav.open .mn-link:nth-child(7){transition-delay:0.24s}#mobile-nav.open .mn-link:nth-child(8){transition-delay:0.28s}
+    .mn-link:hover{color:var(--gold)}
+    .mn-enquire{margin-top:6px;font-weight:200;font-size:0.68rem;letter-spacing:0.24em;text-transform:uppercase;color:var(--night);background:var(--gold);padding:14px 36px;text-decoration:none;opacity:0;transform:translateY(14px);transition:opacity 0.4s cubic-bezier(.16,1,.3,1),transform 0.4s cubic-bezier(.16,1,.3,1),background 0.2s}
+    #mobile-nav.open .mn-enquire{opacity:1;transform:none;transition-delay:0.32s}
+    .mn-enquire:hover{background:var(--amber)}
+    .mn-close{position:absolute;top:28px;right:28px;background:none;border:none;cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center}
+    .mn-close::before,.mn-close::after{content:'';position:absolute;width:20px;height:1px;background:var(--sand)}
+    .mn-close::before{transform:rotate(45deg)}.mn-close::after{transform:rotate(-45deg)}
+    @media(min-width:641px)and(max-width:1100px){
+      #nav{padding:22px 40px}#nav.scrolled{padding:14px 40px}.nav-links{gap:24px}
+      .contact-hero{padding-top:86px}.contact-hero-left,.contact-hero-right{padding:60px 40px}
+      .site-footer{padding:60px 40px 40px}.ft-top{grid-template-columns:1fr;gap:40px}
+    }
+    @media(max-width:640px){
+      #nav{padding:18px 24px}#nav.scrolled{padding:12px 24px}
+      .nav-links,.nav-enquire{display:none!important}.nav-hamburger{display:flex!important}
+      .contact-hero{grid-template-columns:1fr;min-height:auto;padding-top:0}
+      .contact-hero-left{padding:100px 24px 48px}
+      .contact-hero-right{padding:48px 24px 80px;border-left:none;border-top:1px solid rgba(192,173,148,0.06)}
+      .form-row{grid-template-columns:1fr;gap:0}
+      .site-footer{padding:52px 24px 32px}.ft-top{grid-template-columns:1fr;gap:36px}
+      .ft-nav{flex-wrap:wrap;gap:36px}.ft-bottom{flex-direction:column;align-items:flex-start;gap:14px}
+    }
+  </style>
+</head>
+<body>
+  <div id="mobile-nav">
+    <button class="mn-close" id="mn-close" aria-label="Close menu"></button>
+    <a href="index.html" class="mn-link">Home</a>
+    <a href="about.html" class="mn-link">About</a>
+    <a href="fashion-design.html" class="mn-link">Fashion</a>
+    <a href="interior-design.html" class="mn-link">Interiors</a>
+    <a href="digital-design.html" class="mn-link">Digital</a>
+    <a href="product-design.html" class="mn-link">Product</a>
+    <a href="branding.html" class="mn-link">Branding</a>
+    <a href="contact.html" class="mn-link">Contact</a>
+    <a href="contact.html" class="mn-enquire">Enquire</a>
+  </div>
+  <div id="cur-dot"></div>
+  <div id="cur-ring"></div>
+
+  <nav id="nav">
+    <a href="index.html" class="nav-logo">Emden Design</a>
+    <ul class="nav-links">
+      <li><a href="about.html">About</a></li>
+      <li class="nav-dropdown">
+        <a href="index.html#services">Services <span class="nav-arrow">▾</span></a>
+        <div class="nav-drop-menu">
+          <a href="fashion-design.html">Fashion Design</a>
+          <a href="interior-design.html">Interior Design</a>
+          <a href="digital-design.html">Digital Design</a>
+          <a href="product-design.html">Product Design</a>
+          <a href="branding.html">Branding</a>
+        </div>
+      </li>
+      <li><a href="contact.html" style="color:var(--ivory)">Contact</a></li>
+    </ul>
+    <a href="contact.html" class="nav-enquire">Enquire</a>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span></button>
+  </nav>
+
+  <main class="contact-hero">
+    <!-- LEFT: Intro + direct contact -->
+    <div class="contact-hero-left">
+      <p class="eyebrow-bar rev">Get in Touch</p>
+      <h1 class="contact-title rev d1">Begin Your<br><em>Project</em></h1>
+      <p class="contact-tagline rev d2">
+        We work with a select number of clients each year, giving every project the full weight of our attention. If you have a space, object, or identity in mind, we would love to hear about it.
+      </p>
+      <div class="contact-direct">
+        <div class="contact-direct-item rev d2">
+          <span class="contact-direct-label">Email</span>
+          <a href="mailto:richard@emdendesign.com" class="contact-direct-value">richard@emdendesign.com</a>
+        </div>
+        <div class="contact-direct-item rev d3">
+          <span class="contact-direct-label">Studio</span>
+          <span class="contact-direct-value" style="cursor:default;color:var(--sand)">By appointment</span>
+        </div>
+        <div class="contact-direct-item rev d3">
+          <span class="contact-direct-label">Follow</span>
+          <div style="display:flex;gap:24px;margin-top:2px">
+            <a href="#" class="contact-direct-value" style="font-size:0.8rem">Instagram</a>
+            <a href="#" class="contact-direct-value" style="font-size:0.8rem">Houzz</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Form -->
+    <div class="contact-hero-right">
+      <h2 class="form-heading rev">Send us a message</h2>
+      <form action="#" method="POST" novalidate>
+        <div class="form-row">
+          <div class="form-group rev d1">
+            <label class="form-label" for="first-name">First Name</label>
+            <input class="form-input" id="first-name" type="text" name="first_name" placeholder="Richard" autocomplete="given-name">
+          </div>
+          <div class="form-group rev d1">
+            <label class="form-label" for="last-name">Last Name</label>
+            <input class="form-input" id="last-name" type="text" name="last_name" placeholder="Emden" autocomplete="family-name">
+          </div>
+        </div>
+        <div class="form-group rev d2">
+          <label class="form-label" for="email">Email Address</label>
+          <input class="form-input" id="email" type="email" name="email" placeholder="you@example.com" autocomplete="email">
+        </div>
+        <div class="form-group rev d2">
+          <label class="form-label" for="service">Area of Interest</label>
+          <select class="form-select" id="service" name="service">
+            <option value="" disabled selected>Select a discipline</option>
+            <option value="fashion">Fashion Design</option>
+            <option value="interior">Interior Design</option>
+            <option value="digital">Digital Design</option>
+            <option value="product">Product Design</option>
+            <option value="branding">Branding</option>
+            <option value="other">Other / Multiple</option>
+          </select>
+        </div>
+        <div class="form-group rev d3">
+          <label class="form-label" for="message">Tell us about your project</label>
+          <textarea class="form-textarea" id="message" name="message" placeholder="Describe your vision, timeline, and any other relevant details…"></textarea>
+        </div>
+        <button type="submit" class="form-submit rev d4">
+          Send Message
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M1 7h12M8 2l5 5-5 5"/></svg>
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="ft-top">
+      <div>
+        <a href="index.html" class="ft-logo">Emden Design</a>
+        <p class="ft-tagline">Design without limits</p>
+      </div>
+      <nav class="ft-nav">
+        <div class="ft-col">
+          <p class="ft-col-title">Services</p>
+          <a href="fashion-design.html">Fashion Design</a>
+          <a href="interior-design.html">Interior Design</a>
+          <a href="digital-design.html">Digital Design</a>
+          <a href="product-design.html">Product Design</a>
+          <a href="branding.html">Branding</a>
+        </div>
+        <div class="ft-col">
+          <p class="ft-col-title">Studio</p>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </nav>
+    </div>
+    <div class="ft-bottom">
+      <span class="ft-copy">© 2025 Emden Design. All rights reserved.</span>
+      <div class="ft-social"><a href="#">Instagram</a><a href="#">Houzz</a></div>
+    </div>
+  </footer>
+
+  <script>
+  const dot=document.getElementById('cur-dot'),ring=document.getElementById('cur-ring');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});
+  (function animRing(){rx+=(mx-rx)*0.13;ry+=(my-ry)*0.13;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);})();
+  document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('on-link'));el.addEventListener('mouseleave',()=>document.body.classList.remove('on-link'));});
+  const nav=document.getElementById('nav');
+  window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>40),{passive:true});
+  const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');}),{threshold:0.08});
+  document.querySelectorAll('.rev').forEach(el=>io.observe(el));
+  // ─── HAMBURGER ─────────────────────────────────────────
+  (function() {
+    const hbg = document.getElementById('nav-hamburger');
+    const mNav = document.getElementById('mobile-nav');
+    const mClose = document.getElementById('mn-close');
+    function openNav() { mNav.classList.add('open'); hbg.classList.add('open'); hbg.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; }
+    function closeNav() { mNav.classList.remove('open'); hbg.classList.remove('open'); hbg.setAttribute('aria-expanded','false'); document.body.style.overflow=''; }
+    hbg.addEventListener('click', () => mNav.classList.contains('open') ? closeNav() : openNav());
+    mClose.addEventListener('click', closeNav);
+    mNav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
+  })();
+  </script>
+</body>
+</html>
