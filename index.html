@@ -1077,20 +1077,60 @@
     heroCtx.drawImage(bm, (canvasW - dw) * 0.5, (canvasH - dh) * 0.5, dw, dh);
   }
 
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+  // ── JPEG path (mobile) ──────────────────────────────────────
+  const FRAME_COUNT = 239;
+  const jpegFrames = isMobile ? new Array(FRAME_COUNT) : null;
+  let jpegLoaded = 0;
+
+  function preloadJpegFrames() {
+    sizeCanvas();
+    for (let i = 0; i < FRAME_COUNT; i++) {
+      const img = new Image();
+      const num = String(i + 1).padStart(4, '0');
+      img.onload = () => {
+        jpegLoaded++;
+        if (loadFill) loadFill.style.width = (jpegLoaded / FRAME_COUNT * 100) + '%';
+        if (jpegLoaded === 1) {
+          frameReady = true;
+          heroCanvas.style.display = 'block';
+          drawCoverImg(img);
+        }
+        if (jpegLoaded === FRAME_COUNT) {
+          if (loadBar) { loadBar.style.opacity = '0'; setTimeout(() => loadBar?.remove(), 600); }
+        }
+      };
+      img.src = `./hero-frames/frame_${num}.jpg`;
+      jpegFrames[i] = img;
+    }
+  }
+
+  function drawCoverImg(img) {
+    const sw = img.naturalWidth, sh = img.naturalHeight;
+    const scale = Math.max(canvasW / sw, canvasH / sh);
+    heroCtx.drawImage(img, (canvasW - sw * scale) * 0.5, (canvasH - sh * scale) * 0.5, sw * scale, sh * scale);
+  }
+
+  // ── Video extraction path (desktop) ────────────────────────
   const frames = [];
   let frameReady = false, vidDur = 0;
 
   function showFrame(p) {
-    if (!frameReady || !frames.length) return;
-    const t = p * vidDur;
-    let lo = 0, hi = frames.length - 1;
-    while (lo < hi) {
-      const mid = (lo + hi + 1) >> 1;
-      if (frames[mid].time <= t) lo = mid; else hi = mid - 1;
-    }
+    if (!frameReady) return;
     const gs = Math.max(0, 1 - p / 0.008);
     heroCanvas.style.filter = gs > 0 ? `grayscale(${gs})` : 'none';
-    drawCover(frames[lo].bm);
+    if (isMobile) {
+      const idx = Math.min(Math.floor(p * FRAME_COUNT), FRAME_COUNT - 1);
+      const img = jpegFrames[idx];
+      if (img && img.complete && img.naturalWidth) drawCoverImg(img);
+    } else {
+      if (!frames.length) return;
+      const t = p * vidDur;
+      let lo = 0, hi = frames.length - 1;
+      while (lo < hi) { const mid = (lo + hi + 1) >> 1; if (frames[mid].time <= t) lo = mid; else hi = mid - 1; }
+      drawCover(frames[lo].bm);
+    }
   }
 
   const MAX_FRAMES = 240;
@@ -1113,7 +1153,7 @@
     heroCanvas.style.display = 'block';
     drawCover(firstBm);
 
-    video.playbackRate = Math.min(4.0, video.playbackRate !== undefined ? 4.0 : 1.0);
+    video.playbackRate = 4.0;
     video.currentTime  = 0;
     let lastCapTime = -999;
 
@@ -1163,6 +1203,9 @@
     showFrame(heroProgress);
   }, { passive: true });
 
+  if (isMobile) {
+    preloadJpegFrames();
+  } else {
   (async function boot() {
     let started = false;
     function tryExtract() {
@@ -1173,11 +1216,9 @@
     if (video.readyState >= 2) { tryExtract(); return; }
     video.addEventListener('canplaythrough', tryExtract, { once: true });
     video.addEventListener('loadeddata',     tryExtract, { once: true });
-    // iOS won't buffer until user interaction — start on first touch/scroll
-    window.addEventListener('touchstart', tryExtract, { once: true, passive: true });
-    window.addEventListener('scroll',     tryExtract, { once: true, passive: true });
     setTimeout(tryExtract, 3000); // hard fallback
   })();
+  }
 
   // ─── REVEAL (.reveal — new sections) ─────────────────────
   const revealObs = new IntersectionObserver(entries => {
