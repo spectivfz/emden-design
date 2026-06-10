@@ -672,9 +672,18 @@
     /* ─── MOBILE HERO STATIC ─────────────────────────────── */
     @media (max-width: 768px) {
       #hero-scroll { height: 100vh; }
-      #hero-bg { background-image: url('./Graphic%20Design/2.jpg'); filter: none; }
+      #hero-bg {
+        background-image: url('./Graphic%20Design/2.jpg');
+        filter: none;
+      }
+      #hero-bg::after {
+        content: '';
+        position: absolute; inset: 0;
+        background: linear-gradient(to bottom, rgba(8,7,10,0.55) 0%, rgba(8,7,10,0.1) 50%, rgba(8,7,10,0.7) 100%);
+      }
       #hero-canvas, #hero-load-bar, #h-prog-track, #scroll-hint { display: none !important; }
       #hl-title { opacity: 1 !important; }
+      .h-layer:not(#hl-title) { display: none !important; }
     }
 
     /* ─── MOBILE ≤640px ───────────────────────────────────── */
@@ -1220,6 +1229,7 @@
   }
 
   window.addEventListener('scroll', () => {
+    if (isMobile) return;
     heroProgress = heroRange > 0 ? Math.max(0, Math.min(1, window.scrollY / heroRange)) : 0;
     updateHeroUI(heroProgress);
     showFrame(heroProgress);
