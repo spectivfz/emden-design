@@ -199,7 +199,10 @@ body {
   font-size: clamp(5.5rem, 14vw, 13.5rem);
   line-height: 0.88; letter-spacing: -0.03em;
   color: var(--cream);
-  text-shadow: 0 4px 60px rgba(0,0,0,0.85);
+  text-shadow:
+    0 2px 12px rgba(0,0,0,1),
+    0 8px 60px rgba(0,0,0,0.9),
+    0 20px 120px rgba(0,0,0,0.7);
 }
 .hero-heading .word { display: block; overflow: hidden; }
 .hero-heading .word > span { display: inline-block; will-change: transform; }
@@ -207,17 +210,19 @@ body {
 .hero-tagline {
   margin-top: 38px;
   font-size: 0.72rem; font-weight: 200; letter-spacing: 0.3em; text-transform: uppercase;
-  color: rgba(244, 239, 229, 0.82);
-  border-top: 1px solid rgba(176, 132, 60, 0.35);
+  color: var(--cream);
+  border-top: 1px solid rgba(176, 132, 60, 0.5);
   padding-top: 18px;
-  text-shadow: 0 2px 20px rgba(0,0,0,0.9);
+  text-shadow: 0 1px 8px rgba(0,0,0,1), 0 4px 30px rgba(0,0,0,0.9);
 }
 .scroll-indicator {
   position: absolute; bottom: 38px; left: 50%; transform: translateX(-50%);
   display: flex; flex-direction: column; align-items: center; gap: 12px;
 }
 .scroll-indicator span {
-  font-size: 0.58rem; letter-spacing: 0.36em; text-transform: uppercase; color: var(--cream-faint);
+  font-size: 0.58rem; letter-spacing: 0.36em; text-transform: uppercase;
+  color: rgba(244, 239, 229, 0.65);
+  text-shadow: 0 1px 8px rgba(0,0,0,1);
 }
 .scroll-indicator .arrow {
   width: 1px; height: 44px; position: relative; overflow: hidden;
@@ -564,7 +569,7 @@ body {
   .scroll-section.section-content { display: none; }
   /* show the looping video behind the hero title (scrim only, for legibility) */
   .hero-standalone {
-    background: transparent;
+    background: radial-gradient(ellipse 100% 65% at 50% 48%, rgba(8,7,10,0.72) 0%, transparent 100%);
   }
   .nav-links, .nav-enquire { display: none; }
   .nav-hamburger { display: flex; }
