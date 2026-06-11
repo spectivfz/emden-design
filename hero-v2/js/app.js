@@ -102,7 +102,12 @@ function loadFrame(i) {
 const isMobile = window.matchMedia("(max-width: 768px)").matches;
 if (isMobile) {
   const mv = document.getElementById("hero-mobile-video");
-  if (mv) { mv.play().catch(() => {}); }
+  if (mv) {
+    mv.play().catch(() => {});
+    // Wait for loader to finish fading (0.7s), then fade video in — prevents
+    // a bright-frame flash from showing through the semi-transparent hero scrim.
+    setTimeout(() => { mv.style.opacity = "1"; }, 700);
+  }
   loader.classList.add("hidden");
   introReveal();
 } else {
