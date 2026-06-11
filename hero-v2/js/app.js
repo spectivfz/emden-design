@@ -165,18 +165,22 @@ const ANIMATIONS = {
 };
 
 document.querySelectorAll(".scroll-section").forEach((section) => {
-  const enter = parseFloat(section.dataset.enter) / 100;
-  const leave = parseFloat(section.dataset.leave) / 100;
+  const isStats = section.classList.contains("section-stats");
+  let enter = parseFloat(section.dataset.enter) / 100;
+  let leave = parseFloat(section.dataset.leave) / 100;
   const persist = section.dataset.persist === "true";
   const type = section.dataset.animation || "fade-up";
 
+  // On mobile the 4 villa title sections are hidden (CSS); bring the stats in
+  // early so scrolling past the hero goes straight to the numbers.
+  if (isMobile && isStats) { enter = 0.30; leave = 1.0; }
+
   // Position so the section is vertically CENTERED in the viewport when scroll
-  // progress hits the midpoint of its range. The container is 900vh but the
-  // scrollable range is 800vh, so viewport-center at progress p sits at
-  // (p*800 + 50)vh — express that as a % of the 900vh container.
-  // Persistent sections are positioned for p=1 so they hold center at the end.
+  // progress hits the midpoint of its range. Use the live container/viewport
+  // size so this works for both the tall desktop container and the short mobile one.
   const mid = persist ? 1.0 : (enter + leave) / 2;
-  section.style.top = (((mid * 800 + 50) / 900) * 100) + "%";
+  const ch = scrollContainer.offsetHeight, vpx = window.innerHeight;
+  section.style.top = (((mid * (ch - vpx) + vpx / 2) / ch) * 100) + "%";
 
   const tl = gsap.timeline({ paused: true });
   if (section.classList.contains("section-stats")) {
@@ -209,7 +213,7 @@ document.querySelectorAll(".stat-number").forEach((el) => {
   const target = parseFloat(el.dataset.value);
   const decimals = parseInt(el.dataset.decimals || "0");
   const statsSection = el.closest(".scroll-section");
-  const enter = parseFloat(statsSection.dataset.enter) / 100;
+  const enter = isMobile ? 0.30 : parseFloat(statsSection.dataset.enter) / 100;
   let counted = false;
   ScrollTrigger.create({
     trigger: scrollContainer,
@@ -276,7 +280,7 @@ document.querySelectorAll(".marquee-wrap").forEach((el) => {
       overlay.style.opacity = (opacity * 0.95).toFixed(3);
     }
   });
-})(0.80, 1.0);
+})(isMobile ? 0.25 : 0.80, 1.0);
 
 /* ── NAV: solid background once scrolled ── */
 const nav = document.getElementById("nav");
