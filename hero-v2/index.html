@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emden Design — Cinematic Hero (Test)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- 1. LOADER -->
+  <div id="loader">
+    <div class="loader-brand">EMDEN</div>
+    <div id="loader-bar"><div id="loader-fill"></div></div>
+    <div id="loader-percent">0%</div>
+  </div>
+
+  <!-- 2. FIXED NAV (matches main site) -->
+  <nav id="nav">
+    <a href="../index.html" class="nav-logo">Emden Design</a>
+    <ul class="nav-links">
+      <li><a href="../about.html">About</a></li>
+      <li class="nav-dropdown">
+        <a href="#work">Services <span class="nav-arrow">&#9660;</span></a>
+        <div class="nav-drop-menu">
+          <a href="../fashion-design.html">Fashion Design</a>
+          <a href="../interior-design.html">Interior Design</a>
+          <a href="../digital-design.html">Digital Design</a>
+          <a href="../product-design.html">Product Design</a>
+          <a href="../branding.html">Branding</a>
+        </div>
+      </li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+    <a href="../contact.html" class="nav-enquire">Enquire</a>
+  </nav>
+
+  <!-- 3. STANDALONE HERO -->
+  <section class="hero-standalone" id="hero">
+    <h1 class="hero-heading">
+      <span class="word"><span>EMDEN</span></span>
+      <span class="word gold"><span>DESIGN</span></span>
+    </h1>
+    <p class="hero-tagline">Luxury Interior Architecture &amp; Residences</p>
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <div class="arrow"></div>
+    </div>
+  </section>
+
+  <!-- 4. CANVAS -->
+  <div class="canvas-wrap" id="canvas-wrap">
+    <canvas id="canvas"></canvas>
+  </div>
+
+  <!-- 5. DARK OVERLAY -->
+  <div id="dark-overlay"></div>
+
+  <!-- 6. MARQUEE -->
+  <div class="marquee-wrap" data-scroll-speed="-30">
+    <div class="marquee-text">Phuket &mdash; Bespoke Interiors &mdash; Luxury Fashion &mdash; Craftsmanship &mdash; Phuket &mdash; Bespoke Interiors</div>
+  </div>
+
+  <!-- 7. SCROLL CONTAINER -->
+  <div id="scroll-container">
+
+    <section class="scroll-section section-content align-left"
+             data-enter="9.5" data-leave="25.5" data-animation="fade-up">
+      <div class="section-inner">
+        <span class="section-label">001 / The Living Heart</span>
+        <h2 class="section-heading">Grand<br>Living Room</h2>
+        <p class="section-body">A soaring cathedral ceiling opens to the horizon through floor-to-ceiling glass. Polished hardwood, bespoke furniture, gallery art &mdash; a space designed to be felt, not merely seen.</p>
+      </div>
+    </section>
+
+    <section class="scroll-section section-content align-left"
+             data-enter="27" data-leave="43" data-animation="stagger-up">
+      <div class="section-inner">
+        <span class="section-label">002 / Curated for Conversation</span>
+        <h2 class="section-heading">The<br>Dining Room</h2>
+        <p class="section-body">Original artwork, a hand-crafted glass table, and twenty feet of ocean beyond. Yellow accents against open sky. Every meal, a ceremony.</p>
+      </div>
+    </section>
+
+    <section class="scroll-section section-content align-right"
+             data-enter="43.25" data-leave="59.25" data-animation="fade-up">
+      <div class="section-inner">
+        <span class="section-label">003 / Horizon Without Boundary</span>
+        <h2 class="section-heading">Infinity<br>Pool</h2>
+        <p class="section-body">A 25-metre edge dissolves into the Andaman Sea. Three islands. One unbroken view &mdash; positioned to hold the last light of every day.</p>
+      </div>
+    </section>
+
+    <section class="scroll-section section-content align-left"
+             data-enter="61.5" data-leave="76" data-animation="stagger-up">
+      <div class="section-inner">
+        <span class="section-label">004 / The Private Sanctuary</span>
+        <h2 class="section-heading">Master<br>Suite</h2>
+        <p class="section-body">Dark teak, handpicked art and a four-poster bed. Dawn arrives through floor-to-ceiling glass. Luxury here is quiet &mdash; and rest is absolute.</p>
+      </div>
+    </section>
+
+    <section class="scroll-section section-stats"
+             data-enter="80" data-leave="100" data-animation="stagger-up">
+      <div class="stats-grid">
+        <div class="stat">
+          <span class="stat-row"><span class="stat-number" data-value="1998" data-decimals="0">0</span></span>
+          <span class="stat-label">Established, London</span>
+        </div>
+        <div class="stat">
+          <span class="stat-row"><span class="stat-number" data-value="200" data-decimals="0">0</span><span class="stat-suffix">+</span></span>
+          <span class="stat-label">Luxury stores worldwide</span>
+        </div>
+        <div class="stat">
+          <span class="stat-row"><span class="stat-number" data-value="6" data-decimals="0">0</span></span>
+          <span class="stat-label">Standalone Emden outlets</span>
+        </div>
+        <div class="stat">
+          <span class="stat-row"><span class="stat-number" data-value="25" data-decimals="0">0</span><span class="stat-suffix">m</span></span>
+          <span class="stat-label">Infinity edge, Andaman Sea</span>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ═══════════ BELOW: SECTIONS FROM THE MAIN HOME PAGE ═══════════ -->
+  <div id="below-content">
+
+    <!-- DISCIPLINES -->
+    <section class="section" id="work">
+      <div class="disc-head">
+        <div>
+          <div class="eyebrow reveal">What We Create</div>
+          <h2 class="reveal d1">Five disciplines,<br>one vision.</h2>
+        </div>
+        <p class="reveal d1">From the cut of a garment to the soul of a room, Emden Design carries a singular eye for the bespoke across every medium.</p>
+      </div>
+      <div class="disc-cards">
+        <a href="../fashion-design.html" class="disc-card reveal d1"
+           data-img="../Fashion%20Design/5.jpg" data-fb="#1c1714,#2a201a">
+          <div class="c-img"></div>
+          <div class="c-arrow">&#8599;</div>
+          <div class="c-body">
+            <div class="c-num">01</div>
+            <h3>Fashion Design</h3>
+            <p class="c-desc">Beautifully crafted, trend-driven accessories and ready-to-wear, manufactured through a trusted network of Asia&rsquo;s finest ateliers.</p>
+          </div>
+        </a>
+        <a href="../interior-design.html" class="disc-card reveal d2"
+           data-img="../Interior%20Design/8.jpg" data-fb="#18120e,#2c211a">
+          <div class="c-img"></div>
+          <div class="c-arrow">&#8599;</div>
+          <div class="c-body">
+            <div class="c-num">02</div>
+            <h3>Interior Design</h3>
+            <p class="c-desc">Luxury villas and private homes across Phuket and Thailand &mdash; spaces that encapsulate the people who live within them.</p>
+          </div>
+        </a>
+        <a href="../digital-design.html" class="disc-card reveal d3"
+           data-img="../Graphic%20Design/2.jpg" data-fb="#141414,#262019">
+          <div class="c-img"></div>
+          <div class="c-arrow">&#8599;</div>
+          <div class="c-body">
+            <div class="c-num">03</div>
+            <h3>Digital Design</h3>
+            <p class="c-desc">Original prints and digital artwork, translating signature motifs into surface, textile and screen.</p>
+          </div>
+        </a>
+        <a href="../product-design.html" class="disc-card reveal d4"
+           data-img="../Product%20Design/1.jpg" data-fb="#171310,#28201a">
+          <div class="c-img"></div>
+          <div class="c-arrow">&#8599;</div>
+          <div class="c-body">
+            <div class="c-num">04</div>
+            <h3>Product Design</h3>
+            <p class="c-desc">From concept to production line &mdash; refining the manufacturing process for craftsmanship and optimised value.</p>
+          </div>
+        </a>
+        <a href="../branding.html" class="disc-card reveal d4"
+           data-img="../Branding/1.jpg" data-fb="#15110d,#2a2019">
+          <div class="c-img"></div>
+          <div class="c-arrow">&#8599;</div>
+          <div class="c-body">
+            <div class="c-num">05</div>
+            <h3>Branding</h3>
+            <p class="c-desc">A complete identity system &mdash; giving each venture a voice as distinctive as the work it represents.</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- MARQUEE BAND -->
+    <div class="marquee-band">
+      <div class="marquee-track">
+        <span>London <b>&middot;</b> Bangkok <b>&middot;</b> Phuket <b>&middot;</b> Bespoke Interiors <b>&middot;</b> Luxury Fashion <b>&middot;</b> Craftsmanship <b>&middot;</b> &nbsp;</span>
+        <span>London <b>&middot;</b> Bangkok <b>&middot;</b> Phuket <b>&middot;</b> Bespoke Interiors <b>&middot;</b> Luxury Fashion <b>&middot;</b> Craftsmanship <b>&middot;</b> &nbsp;</span>
+      </div>
+    </div>
+
+    <!-- ABOUT -->
+    <section class="section" id="about">
+      <div class="about-grid">
+        <div class="about-portrait reveal">
+          <img src="../About/1.1.jpg"
+               alt="Richard Emden, Founder"
+               onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(150deg,#1c1610,#0c0a09)'">
+          <div class="ptag">Richard Emden &middot; Founder</div>
+        </div>
+        <div class="about-text">
+          <div class="eyebrow reveal d1">The Studio</div>
+          <h2 class="reveal d1">Two decades of <em>creative visualisation.</em></h2>
+          <p class="reveal d2">A luxury fashion and interiors designer with more than twenty years of professional experience, Richard Emden is a master of creative visualisation &mdash; leading projects from ideation through to execution for a diverse array of global names.</p>
+          <p class="reveal d2">Emden Design began as a luxury fashion house in late-90s London before expanding into Asia, with original lines retailing in over 200 luxury stores worldwide and six standalone Emden outlets. Today the focus turns to interiors &mdash; luxury holiday villas in Phuket and refined homes across Thailand &mdash; supported by a rich network of elite craftspeople and premium wholesalers.</p>
+          <div class="stats reveal d3">
+            <div><span class="stat-n">20+</span><span class="stat-k">Years</span></div>
+            <div><span class="stat-n">200+</span><span class="stat-k">Luxury stockists</span></div>
+            <div><span class="stat-n">6</span><span class="stat-k">Standalone outlets</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PORTFOLIO GALLERY -->
+    <section class="section" id="gallery">
+      <div class="gallery-head">
+        <div class="eyebrow reveal" style="justify-content:center">Selected Work</div>
+        <h2 class="reveal d1">A portfolio of the bespoke</h2>
+      </div>
+      <div class="gallery-mosaic">
+        <div class="tile t-a reveal"    data-cat="Interiors" data-cap="Phuket Villa">
+          <img src="../Interior%20Design/9.jpg" alt=""
+               onerror="this.parentElement.style.background='linear-gradient(135deg,#241c14,#0c0a09)'">
+        </div>
+        <div class="tile t-b reveal d1" data-cat="Fashion" data-cap="Editorial Campaign">
+          <img src="../Fashion%20Design/5.jpg" alt=""
+               onerror="this.parentElement.style.background='linear-gradient(135deg,#241c14,#0c0a09)'">
+        </div>
+        <div class="tile t-c reveal"    data-cat="Digital" data-cap="Creative Direction">
+          <img src="../Graphic%20Design/4.jpg" alt=""
+               onerror="this.parentElement.style.background='linear-gradient(135deg,#241c14,#0c0a09)'">
+        </div>
+        <div class="tile t-d reveal d1" data-cat="Product" data-cap="Bespoke Object">
+          <img src="../Product%20Design/png%201.png" alt=""
+               onerror="this.parentElement.style.background='linear-gradient(135deg,#241c14,#0c0a09)'">
+        </div>
+        <div class="tile t-e reveal d2" data-cat="Branding" data-cap="Brand Identity">
+          <img src="../Branding/png%201.png" alt="" style="object-position: 50% 55%;"
+               onerror="this.parentElement.style.background='linear-gradient(135deg,#241c14,#0c0a09)'">
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section contact-new" id="contact">
+      <div class="eyebrow reveal">Begin a Project</div>
+      <h2 class="reveal d1">Let&rsquo;s create<br>something <em>timeless.</em></h2>
+      <a class="mailto reveal d2" href="mailto:emdendesign@gmail.com">emdendesign@gmail.com <span>&rarr;</span></a>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer-new">
+      <div class="ft-brand">EMDEN<b>.</b></div>
+      <div class="new-socials">
+        <a href="https://www.instagram.com/emdendesign/" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.facebook.com/emdendesign" target="_blank" rel="noopener">Facebook</a>
+        <a href="https://www.linkedin.com/in/richard-emden-a721b560/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+      <div class="ft-copyright">
+        <span>&copy; 2026 Emden Design &mdash; Bespoke Fashion &amp; Interiors</span>
+        <span>Design without limits</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
