@@ -307,6 +307,25 @@ document.querySelectorAll(".disc-card").forEach((card) => {
   probe.src = url;
 });
 
+/* ── MOBILE HAMBURGER MENU ── */
+(function () {
+  const hamburger = document.querySelector('.nav-hamburger');
+  const mobileMenu = document.querySelector('.nav-mobile-menu');
+  if (!hamburger || !mobileMenu) return;
+  hamburger.addEventListener('click', () => {
+    const isOpen = hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open', isOpen);
+    hamburger.setAttribute('aria-expanded', isOpen);
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+    });
+  });
+})();
+
 /* ── GALLERY captions ── */
 document.querySelectorAll(".tile").forEach((t) => {
   const c = document.createElement("div");

@@ -76,7 +76,10 @@ body {
   font-weight: 300; font-size: 1.25rem;
   letter-spacing: 0.22em; text-transform: uppercase;
   color: var(--ivory); text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
 }
+#nav.scrolled .nav-logo { opacity: 1; }
 .nav-links { display: flex; gap: 44px; list-style: none; }
 .nav-links a {
   font-weight: 200; font-size: 0.67rem;
@@ -119,6 +122,57 @@ body {
 .nav-arrow { display: inline-block; margin-left: 5px; font-size: 0.5rem; opacity: 0.45; transition: transform 0.25s; }
 .nav-dropdown:hover .nav-arrow { transform: rotate(180deg); }
 
+/* hamburger — hidden on desktop, shown on mobile */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 26px; height: 18px;
+  background: none; border: none; cursor: pointer; padding: 0;
+  flex-shrink: 0; z-index: 900;
+}
+.nav-hamburger span {
+  width: 100%; height: 1px;
+  background: var(--ivory); display: block;
+  transition: transform 0.35s var(--ease-out), opacity 0.25s ease;
+}
+.nav-hamburger.open span:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
+
+/* full-screen mobile nav overlay */
+.nav-mobile-menu {
+  position: fixed; inset: 0; z-index: 790;
+  background: rgba(8, 7, 10, 0.97);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 8px;
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transition: opacity 0.4s ease, visibility 0s linear 0.4s;
+}
+.nav-mobile-menu.open {
+  opacity: 1; visibility: visible; pointer-events: auto;
+  transition: opacity 0.4s ease, visibility 0s;
+}
+.nav-mobile-menu a {
+  font-family: var(--font-display);
+  font-weight: 300; font-size: clamp(2rem, 8vw, 2.8rem);
+  letter-spacing: 0.08em; color: var(--cream);
+  text-decoration: none; padding: 10px 0;
+  transition: color 0.25s;
+}
+.nav-mobile-menu a:hover { color: var(--gold); }
+.nav-mobile-menu .nm-enquire {
+  margin-top: 28px;
+  font-family: var(--font-body);
+  font-size: 0.68rem; font-weight: 200;
+  letter-spacing: 0.28em; text-transform: uppercase;
+  color: #fff; background: var(--gold);
+  padding: 14px 44px; text-decoration: none;
+  transition: background 0.25s;
+}
+.nav-mobile-menu .nm-enquire:hover { background: var(--amber); }
+
 /* ───────── 3. STANDALONE HERO ───────── */
 .hero-standalone {
   position: fixed; inset: 0; z-index: 5;
@@ -142,6 +196,7 @@ body {
   font-size: clamp(5.5rem, 14vw, 13.5rem);
   line-height: 0.88; letter-spacing: -0.03em;
   color: var(--cream);
+  text-shadow: 0 4px 60px rgba(0,0,0,0.85);
 }
 .hero-heading .word { display: block; overflow: hidden; }
 .hero-heading .word > span { display: inline-block; will-change: transform; }
@@ -149,9 +204,10 @@ body {
 .hero-tagline {
   margin-top: 38px;
   font-size: 0.72rem; font-weight: 200; letter-spacing: 0.3em; text-transform: uppercase;
-  color: var(--cream-dim);
+  color: rgba(244, 239, 229, 0.82);
   border-top: 1px solid rgba(176, 132, 60, 0.35);
   padding-top: 18px;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.9);
 }
 .scroll-indicator {
   position: absolute; bottom: 38px; left: 50%; transform: translateX(-50%);
@@ -503,9 +559,10 @@ body {
   .scroll-section.section-content { display: none; }
   /* show the looping video behind the hero title (scrim only, for legibility) */
   .hero-standalone {
-    background: linear-gradient(180deg, rgba(8,7,10,0.5) 0%, rgba(8,7,10,0.28) 45%, rgba(8,7,10,0.72) 100%);
+    background: linear-gradient(180deg, rgba(8,7,10,0.72) 0%, rgba(8,7,10,0.52) 45%, rgba(8,7,10,0.84) 100%);
   }
   .nav-links, .nav-enquire { display: none; }
+  .nav-hamburger { display: flex; }
   .disc-cards { grid-template-columns: 1fr 1fr; }
   .disc-card { will-change: auto; transform-style: flat; }
   .c-body { transform: none; }
