@@ -273,7 +273,7 @@ document.querySelectorAll(".marquee-wrap").forEach((el) => {
   // On mobile the overlay is the consistent dark background from the very start —
   // same surface behind the hero title as behind the stats section.
   if (isMobile) {
-    overlay.style.opacity = "0.50";
+    overlay.style.opacity = "0.34";
     return;
   }
   const fadeRange = 0.04;
