@@ -199,10 +199,7 @@ body {
   font-size: clamp(5.5rem, 14vw, 13.5rem);
   line-height: 0.88; letter-spacing: -0.03em;
   color: var(--cream);
-  text-shadow:
-    0 2px 12px rgba(0,0,0,1),
-    0 8px 60px rgba(0,0,0,0.9),
-    0 20px 120px rgba(0,0,0,0.7);
+  text-shadow: 0 2px 24px rgba(0,0,0,0.75), 0 8px 48px rgba(0,0,0,0.4);
 }
 .hero-heading .word { display: block; overflow: hidden; }
 .hero-heading .word > span { display: inline-block; will-change: transform; }
@@ -213,7 +210,7 @@ body {
   color: var(--cream);
   border-top: 1px solid rgba(176, 132, 60, 0.5);
   padding-top: 18px;
-  text-shadow: 0 1px 8px rgba(0,0,0,1), 0 4px 30px rgba(0,0,0,0.9);
+  text-shadow: 0 1px 16px rgba(0,0,0,0.7);
 }
 .scroll-indicator {
   position: absolute; bottom: 38px; left: 50%; transform: translateX(-50%);
