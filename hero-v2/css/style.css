@@ -564,7 +564,7 @@ body {
   .scroll-section.section-content { display: none; }
   /* show the looping video behind the hero title (scrim only, for legibility) */
   .hero-standalone {
-    background: linear-gradient(180deg, rgba(8,7,10,0.72) 0%, rgba(8,7,10,0.52) 45%, rgba(8,7,10,0.84) 100%);
+    background: transparent;
   }
   .nav-links, .nav-enquire { display: none; }
   .nav-hamburger { display: flex; }

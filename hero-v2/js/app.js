@@ -270,6 +270,12 @@ document.querySelectorAll(".marquee-wrap").forEach((el) => {
 /* ── 6h. DARK OVERLAY (stats section) ── */
 (function initDarkOverlay(enter, leave) {
   const overlay = document.getElementById("dark-overlay");
+  // On mobile the overlay is the consistent dark background from the very start —
+  // same surface behind the hero title as behind the stats section.
+  if (isMobile) {
+    overlay.style.opacity = "0.95";
+    return;
+  }
   const fadeRange = 0.04;
   ScrollTrigger.create({
     trigger: scrollContainer,
@@ -285,7 +291,7 @@ document.querySelectorAll(".marquee-wrap").forEach((el) => {
       overlay.style.opacity = (opacity * 0.95).toFixed(3);
     }
   });
-})(isMobile ? 0.25 : 0.80, 1.0);
+})(0.80, 1.0);
 
 /* ── NAV: solid background once scrolled ── */
 const nav = document.getElementById("nav");
