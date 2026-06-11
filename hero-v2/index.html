@@ -51,10 +51,14 @@
     </div>
   </section>
 
-  <!-- 4. CANVAS -->
+  <!-- 4. CANVAS (desktop scroll-scrub) -->
   <div class="canvas-wrap" id="canvas-wrap">
     <canvas id="canvas"></canvas>
   </div>
+
+  <!-- 4b. MOBILE: looping video instead of the heavy frame-scrub -->
+  <video id="hero-mobile-video" src="../Mobile%20Hero.mp4"
+         autoplay muted loop playsinline webkit-playsinline preload="auto"></video>
 
   <!-- 5. DARK OVERLAY -->
   <div id="dark-overlay"></div>

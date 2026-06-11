@@ -177,6 +177,13 @@ body {
 }
 #canvas { width: 100%; height: 100%; display: block; }
 
+/* mobile hero video — hidden on desktop, replaces the canvas on phones */
+#hero-mobile-video {
+  display: none;
+  position: fixed; inset: 0; z-index: 1;
+  width: 100%; height: 100%; object-fit: cover;
+}
+
 /* ───────── 5. DARK OVERLAY ───────── */
 #dark-overlay {
   position: fixed; inset: 0; z-index: 3;
@@ -490,6 +497,12 @@ body {
 
 /* ───────── MOBILE ───────── */
 @media (max-width: 768px) {
+  .canvas-wrap { display: none; }
+  #hero-mobile-video { display: block; }
+  /* show the looping video behind the hero title (scrim only, for legibility) */
+  .hero-standalone {
+    background: linear-gradient(180deg, rgba(8,7,10,0.5) 0%, rgba(8,7,10,0.28) 45%, rgba(8,7,10,0.72) 100%);
+  }
   .nav-links, .nav-enquire { display: none; }
   .disc-cards { grid-template-columns: 1fr 1fr; }
   .disc-card { will-change: auto; transform-style: flat; }

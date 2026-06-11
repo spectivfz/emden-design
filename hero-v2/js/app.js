@@ -96,10 +96,21 @@ function loadFrame(i) {
   img.src = FRAME_PATH(i);
   frames[i] = img;
 }
-// phase 1: first 10 frames immediately (fast first paint)
-for (let i = 0; i < 10; i++) loadFrame(i);
-// phase 2: the rest in background
-setTimeout(() => { for (let i = 10; i < FRAME_COUNT; i++) loadFrame(i); }, 60);
+// MOBILE: skip the heavy 403-frame scrub (memory/decode jank on iOS). Instead
+// play the looping hero video, hide the loader, and reveal the intro. Desktop
+// keeps the two-phase frame preloader.
+const isMobile = window.matchMedia("(max-width: 768px)").matches;
+if (isMobile) {
+  const mv = document.getElementById("hero-mobile-video");
+  if (mv) { mv.play().catch(() => {}); }
+  loader.classList.add("hidden");
+  introReveal();
+} else {
+  // phase 1: first 10 frames immediately (fast first paint)
+  for (let i = 0; i < 10; i++) loadFrame(i);
+  // phase 2: the rest in background
+  setTimeout(() => { for (let i = 10; i < FRAME_COUNT; i++) loadFrame(i); }, 60);
+}
 
 /* ── HERO INTRO — fade in once loaded ── */
 function introReveal() {
