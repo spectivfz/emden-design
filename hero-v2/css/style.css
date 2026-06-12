@@ -617,13 +617,17 @@ body {
   .tagline-full { display: none; }
   .tagline-mobile { display: inline; }
 
-  /* loader EMDEN sits where the hero EMDEN sits (lower third) so the loader
-     blends seamlessly into the first frame instead of jumping up from centre */
+  /* loader EMDEN sits at the vertical MIDDLE of the hero EMDEN/DESIGN block so
+     the loader blends seamlessly into the first frame instead of jumping */
   #loader { justify-content: flex-end; padding-bottom: 14vh; }
   .loader-brand {
-    position: absolute; left: 0; right: 0; top: 60%;
+    position: absolute; left: 0; right: 0; top: 68.6%;
+    transform: translateY(-50%);
     text-align: center;
   }
+
+  /* scroll cue lower and clear of the subtitle */
+  .scroll-indicator { bottom: 16px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
