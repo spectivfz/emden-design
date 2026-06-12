@@ -281,11 +281,13 @@ document.querySelectorAll(".marquee-wrap").forEach((el) => {
       scrub: true,
       onUpdate: (self) => {
         const p = self.progress;
-        // 0–10% airy, ramp 10%–24% to near-solid dark, hold through the stats
+        // 0–10% airy, ramp 10%–24% to fully solid #08070a — the exact colour
+        // the hero bottom gradient fades into, so frame 1 flows seamlessly into
+        // the stats section background with no visible seam.
         let o;
         if (p <= 0.10) o = 0.04;
-        else if (p < 0.24) o = 0.04 + ((p - 0.10) / 0.14) * 0.92;
-        else o = 0.96;
+        else if (p < 0.24) o = 0.04 + ((p - 0.10) / 0.14) * 0.96;
+        else o = 1;
         overlay.style.opacity = o.toFixed(3);
       }
     });

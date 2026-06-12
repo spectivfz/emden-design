@@ -250,7 +250,7 @@ body {
 /* ───────── 5. DARK OVERLAY ───────── */
 #dark-overlay {
   position: fixed; inset: 0; z-index: 3;
-  background: rgba(8, 7, 8, 0.94);
+  background: var(--night); /* #08070a — exact same dark the hero gradient fades into */
   opacity: 0; pointer-events: none;
 }
 
