@@ -203,7 +203,7 @@ body {
 }
 .hero-heading .word { display: block; overflow: hidden; }
 .hero-heading .word > span { display: inline-block; will-change: transform; }
-.hero-heading .gold > span { color: var(--gold); font-style: italic; }
+.hero-heading .gold > span { color: var(--gold); }
 .hero-tagline {
   margin-top: 38px;
   font-size: 0.72rem; font-weight: 200; letter-spacing: 0.3em; text-transform: uppercase;
@@ -592,7 +592,7 @@ body {
   .gallery-mosaic { grid-template-columns: 1fr 1fr; grid-auto-rows: 180px; }
   .t-a, .t-b, .t-c, .t-d, .t-e { grid-column: span 2; grid-row: span 1; }
   .site-footer-new { flex-direction: column; align-items: flex-start; }
-  #scroll-container { height: 250vh; }
+  #scroll-container { height: 175vh; }
   .site-header nav a:not(.nav-cta) { display: none; }
   .align-left, .align-right { padding: 0 6vw; }
   .align-left .section-inner, .align-right .section-inner {
