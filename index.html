@@ -139,6 +139,9 @@
           <span class="stat-label">Creative disciplines</span>
         </div>
       </div>
+      <div class="stats-cta">
+        <a href="#contact" class="cta-button">Begin your project <span>&rarr;</span></a>
+      </div>
     </section>
 
   </div>
@@ -274,7 +277,38 @@
     <section class="section contact-new" id="contact">
       <div class="eyebrow reveal">Begin a Project</div>
       <h2 class="reveal d1">Let&rsquo;s create<br>something <em>timeless.</em></h2>
-      <a class="mailto reveal d2" href="mailto:emdendesign@gmail.com">emdendesign@gmail.com <span>&rarr;</span></a>
+
+      <form id="enquiry-form" class="enquiry-form reveal d2" novalidate>
+        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+        <div class="field">
+          <label for="ef-name">Name</label>
+          <input id="ef-name" type="text" name="name" placeholder="Your name" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="ef-email">Email</label>
+          <input id="ef-email" type="email" name="email" placeholder="you@example.com" autocomplete="email" required>
+        </div>
+        <div class="field full">
+          <label for="ef-type">What are you dreaming of?</label>
+          <select id="ef-type" name="project_type">
+            <option value="Interior Design" selected>Interior Design</option>
+            <option value="Fashion Design">Fashion Design</option>
+            <option value="Digital Design">Digital Design</option>
+            <option value="Product Design">Product Design</option>
+            <option value="Branding">Branding</option>
+            <option value="Something else">Something else</option>
+          </select>
+        </div>
+        <div class="field full">
+          <label for="ef-message">Tell us about it</label>
+          <textarea id="ef-message" name="message" placeholder="A villa in Phuket, a collection, a brand&hellip;" rows="4"></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="cta-button">Send enquiry <span>&rarr;</span></button>
+        </div>
+        <p class="form-alt">Prefer email? <a href="mailto:emdendesign@gmail.com">emdendesign@gmail.com</a></p>
+      </form>
+      <div id="form-status" class="form-status" role="status"></div>
     </section>
 
     <!-- FOOTER -->

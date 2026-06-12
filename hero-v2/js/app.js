@@ -224,9 +224,12 @@ document.querySelectorAll(".scroll-section").forEach((section) => {
 
   const tl = gsap.timeline({ paused: true });
   if (section.classList.contains("section-stats")) {
-    // stats: fade the stat blocks in (counters animate via the counter system)
+    // stats: fade the stat blocks in (counters animate via the counter system),
+    // then the Begin-your-project CTA rises in after them
     tl.from(section.querySelectorAll(".stat"),
       { opacity: 0, stagger: 0.12, duration: 0.9, ease: "power2.out" });
+    const cta = section.querySelector(".stats-cta");
+    if (cta) tl.from(cta, { opacity: 0, y: 18, duration: 0.7, ease: "power2.out" }, "-=0.35");
   } else {
     // content: fade the whole panel — overlay + title + sub-title — in together
     tl.from(section.querySelector(".section-inner"),
@@ -403,3 +406,43 @@ document.querySelectorAll(".tile").forEach((t) => {
   c.innerHTML = `<small>${t.dataset.cat}</small><p>${t.dataset.cap}</p>`;
   t.appendChild(c);
 });
+
+/* ── ENQUIRY FORM (FormSubmit.co AJAX — no account needed) ── */
+(function () {
+  const form = document.getElementById("enquiry-form");
+  const status = document.getElementById("form-status");
+  if (!form || !status) return;
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    // native-style validation (form is novalidate so we control the UX)
+    if (!form.reportValidity()) return;
+
+    const btn = form.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.innerHTML = "Sending&hellip;";
+
+    const data = Object.fromEntries(new FormData(form));
+    data._subject = "New enquiry — emdendesign website";
+    data._template = "table";
+    data._captcha = "false";
+
+    try {
+      const res = await fetch("https://formsubmit.co/ajax/emdendesign@gmail.com", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) throw new Error("send failed");
+      form.style.display = "none";
+      status.innerHTML = "Thank you &mdash; your enquiry has been received.<br>Richard will be in touch <em>shortly.</em>";
+      status.classList.add("show");
+    } catch (err) {
+      status.innerHTML = 'Something went wrong sending your message.<br>Please email <a href="mailto:emdendesign@gmail.com">emdendesign@gmail.com</a> directly.';
+      status.classList.add("show");
+      btn.disabled = false;
+      btn.innerHTML = "Send enquiry <span>&rarr;</span>";
+    }
+  });
+})();

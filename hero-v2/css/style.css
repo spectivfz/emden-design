@@ -21,7 +21,7 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { -webkit-text-size-adjust: 100%; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 body {
   background: var(--ink);
   color: var(--cream);
@@ -328,6 +328,7 @@ body {
 
 /* stats — the only centered section, sits over the full dark overlay */
 .section-stats { left: 0; right: 0; padding: 0 8vw; }
+.stats-cta { text-align: center; }
 .stats-grid {
   display: grid; grid-template-columns: repeat(4, 1fr); gap: 4vw;
   max-width: 1200px; margin: 0 auto; text-align: center;
@@ -348,13 +349,16 @@ body {
 .cta-button {
   display: inline-flex; align-items: center; gap: 14px;
   margin-top: 34px;
+  font-family: var(--font-body);
   font-size: 0.68rem; font-weight: 400; letter-spacing: 0.26em; text-transform: uppercase;
   color: #fff; background: var(--gold);
   padding: 18px 46px; text-decoration: none;
   border: 1px solid var(--gold);
+  cursor: pointer;
   transition: background 0.3s var(--ease-out), transform 0.35s var(--ease-out), box-shadow 0.35s ease;
   box-shadow: 0 18px 44px -18px rgba(176, 132, 60, 0.6);
 }
+.cta-button:disabled { opacity: 0.55; cursor: default; transform: none; }
 .cta-button:hover { background: var(--amber); transform: translateY(-3px); box-shadow: 0 26px 54px -18px rgba(203, 154, 78, 0.75); }
 .cta-button:focus-visible { outline: 2px solid var(--brass); outline-offset: 4px; }
 .cta-button:active { transform: translateY(-1px); }
@@ -556,6 +560,56 @@ body {
 }
 .mailto:hover { gap: 28px; color: var(--brass); }
 
+/* enquiry form */
+.enquiry-form {
+  max-width: 720px; margin: 60px auto 0; text-align: left;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 38px 32px;
+}
+.field { display: flex; flex-direction: column; gap: 12px; }
+.field.full { grid-column: 1 / -1; }
+.field label {
+  font-size: 11px; font-weight: 300; letter-spacing: .3em; text-transform: uppercase;
+  color: var(--sand);
+}
+.field input, .field select, .field textarea {
+  background: transparent;
+  border: 0; border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  padding: 10px 2px;
+  color: var(--cream);
+  font-family: var(--font-body); font-weight: 300; font-size: 16px; /* ≥16px stops iOS focus zoom */
+  transition: border-color .35s;
+  -webkit-appearance: none; appearance: none;
+}
+.field input::placeholder, .field textarea::placeholder { color: var(--cream-faint); }
+.field input:focus, .field select:focus, .field textarea:focus {
+  outline: none; border-bottom-color: var(--gold);
+}
+.field select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23c0ad94' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 4px center;
+  padding-right: 26px;
+}
+.field select option { background: var(--ink-2); color: var(--cream); }
+.field textarea { resize: vertical; min-height: 110px; }
+.form-actions { grid-column: 1 / -1; text-align: center; }
+.form-actions .cta-button { margin-top: 6px; }
+.form-alt {
+  grid-column: 1 / -1; text-align: center;
+  font-size: 12.5px; letter-spacing: .08em; color: var(--cream-faint);
+}
+.form-alt a { color: var(--sand); text-decoration: none; border-bottom: 1px solid var(--line); transition: color .3s; }
+.form-alt a:hover { color: var(--brass); }
+.form-status {
+  display: none; margin: 56px auto 0; max-width: 560px;
+  font-family: var(--font-display); font-size: clamp(20px, 2.4vw, 28px);
+  font-weight: 300; line-height: 1.45; color: var(--cream);
+}
+.form-status.show { display: block; }
+.form-status em { color: var(--brass-soft); font-style: italic; }
+.form-status a { color: var(--brass); }
+
 /* footer */
 .site-footer-new {
   background: var(--ink);
@@ -639,6 +693,10 @@ body {
 
   /* scroll cue lower and clear of the subtitle */
   .scroll-indicator { bottom: 16px; }
+
+  /* enquiry form stacks on mobile */
+  .enquiry-form { grid-template-columns: 1fr; gap: 30px; margin-top: 44px; }
+  .stats-cta .cta-button { padding: 16px 38px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
