@@ -566,21 +566,15 @@ body {
 /* ───────── MOBILE ───────── */
 @media (max-width: 768px) {
   .canvas-wrap { display: none; }
-  #hero-mobile-video {
-    display: block;
-    /* cinematic warm grade — pull the clashing blue/pink ink toward a cohesive
-       gold-sepia luxury palette so video and gold logo read as one piece */
-    filter: saturate(0.62) sepia(0.32) contrast(1.06) brightness(0.84);
-  }
+  #hero-mobile-video { display: block; }
   /* hide the 4 villa title sections on mobile — go hero -> stats directly */
   .scroll-section.section-content { display: none; }
   /* show the looping video behind the hero title (scrim only, for legibility) */
   .hero-standalone {
-    /* layered cinematic scrim: calm dark pocket behind the centred logo +
-       top scrim (nav) + bottom scrim (scroll cue), video breathes between */
-    background:
-      radial-gradient(ellipse 120% 58% at 50% 46%, rgba(8,7,10,0.8) 0%, rgba(8,7,10,0.38) 52%, transparent 78%),
-      linear-gradient(180deg, rgba(8,7,10,0.72) 0%, transparent 18%, transparent 60%, rgba(8,7,10,0.88) 100%);
+    /* push text to the lower third — sits in the natural dark frond zone */
+    justify-content: flex-end;
+    padding-bottom: 13vh;
+    background: linear-gradient(180deg, transparent 38%, rgba(8,7,10,0.28) 62%, rgba(8,7,10,0.72) 100%);
   }
   .nav-links, .nav-enquire { display: none; }
   .nav-hamburger { display: flex; }
