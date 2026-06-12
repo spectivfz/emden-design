@@ -4,10 +4,10 @@ gsap.registerPlugin(ScrollTrigger);
 /* ── NATIVE SCROLL (no smooth-scroll glide) — ScrollTrigger drives directly ── */
 
 /* ── CONSTANTS ── */
-const FRAME_COUNT = 403;
+const FRAME_COUNT = 1210;    // 30fps extraction — every native frame of the source video
 const FRAME_SPEED = 1.44;    // film completes at same absolute scroll as before the rescale
 const IMAGE_SCALE = 1.0;     // full-bleed cover — video fills the whole screen
-const FRAME_PATH = (i) => `${window.FRAMES_BASE || 'frames/'}frame_${String(i + 1).padStart(4, "0")}.webp`;
+const FRAME_PATH = (i) => `${window.FRAMES_BASE || 'frames30/'}frame_${String(i + 1).padStart(4, "0")}.webp`;
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
@@ -20,7 +20,6 @@ const loaderPercent = document.getElementById("loader-percent");
 
 const frames = new Array(FRAME_COUNT);
 let currentFrame = -1;
-let drawPending = false;
 
 /* ── CANVAS SIZING (devicePixelRatio for crisp rendering) ── */
 function sizeCanvas() {
@@ -36,32 +35,61 @@ sizeCanvas();
    The frame is drawn in cover mode (Math.max scale) so it always fills the
    whole canvas; no letterbox, so no per-frame pixel sampling is needed. The
    static fill is just a safety backdrop for any sub-pixel edge. */
-function drawFrame(index) {
-  const img = frames[index];
-  if (!img || !img.complete || !img.naturalWidth) return;
-
+function blitFrame(img) {
   const cw = canvas.width, ch = canvas.height;
   const iw = img.naturalWidth, ih = img.naturalHeight;
   const scale = Math.max(cw / iw, ch / ih) * IMAGE_SCALE;
   const dw = iw * scale, dh = ih * scale;
-  const dx = (cw - dw) / 2, dy = (ch - dh) / 2;
-  ctx.drawImage(img, dx, dy, dw, dh);
+  ctx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
+}
+
+function drawFrame(index) {
+  const img = frames[index];
+  if (!img || !img.complete || !img.naturalWidth) return false;
+  blitFrame(img);
+  return true;
+}
+
+/* Sub-frame renderer: draws the floor frame, then the next frame on top with
+   the fractional position as opacity. At 30fps density adjacent frames are
+   nearly identical, so the blend reads as continuous motion — the canvas
+   never visibly "snaps" from one frame to the next during the glide. */
+function drawFramePos(pos) {
+  const i0 = Math.floor(pos);
+  const i1 = Math.min(i0 + 1, FRAME_COUNT - 1);
+  const frac = pos - i0;
+  const a = frames[i0];
+  if (!a || !a.complete || !a.naturalWidth) return false;
+  ctx.globalAlpha = 1;
+  blitFrame(a);
+  const b = frames[i1];
+  if (frac > 0.01 && i1 !== i0 && b && b.complete && b.naturalWidth) {
+    ctx.globalAlpha = frac;
+    blitFrame(b);
+    ctx.globalAlpha = 1;
+  }
+  return true;
 }
 
 window.addEventListener("resize", () => {
   sizeCanvas();
   if (currentFrame >= 0) drawFrame(currentFrame);
+  lastDrawnPos = -1; // force the render loop to repaint the blended position
 }, { passive: true });
 
-/* ── 6b. FRAME PRELOADER — two-phase ── */
+/* ── 6b. FRAME PRELOADER — two-phase, early reveal ──
+   With 807 frames we don't hold the visitor hostage for the full set: reveal
+   once the opening stretch is in, and stream the rest in the background while
+   they're reading the hero. */
 let loadedCount = 0;
+const REVEAL_AT = 135; // frames loaded before the loader releases (~4.5s of film)
 function onFrameLoaded() {
   loadedCount++;
-  const pct = Math.round((loadedCount / FRAME_COUNT) * 100);
-  loaderFill.style.transform = `scaleX(${loadedCount / FRAME_COUNT})`;
-  loaderPercent.textContent = pct + "%";
+  const gate = Math.min(loadedCount / REVEAL_AT, 1);
+  loaderFill.style.transform = `scaleX(${gate})`;
+  loaderPercent.textContent = Math.round(gate * 100) + "%";
   if (loadedCount === 1) drawFrame(0);
-  if (loadedCount === FRAME_COUNT) {
+  if (loadedCount === REVEAL_AT) {
     loader.classList.add("hidden");
     introReveal();
   }
@@ -104,7 +132,18 @@ function introReveal() {
     { opacity: 1, duration: 1.3, stagger: 0.18, ease: "power2.out", delay: 0.55 });
 }
 
-/* ── 6d. FRAME-TO-SCROLL BINDING ── */
+/* ── 6d. FRAME-TO-SCROLL BINDING — Apple-style smoothed scrub ──
+   The page scroll stays 100% native (no glide). But instead of snapping the
+   canvas to the scroll position, scroll only sets a TARGET frame; a continuous
+   render loop eases the drawn frame toward that target every display frame.
+   The film glides through intermediate frames and settles in ~150ms — this
+   per-frame catch-up is what Apple's product pages do. Scrubbing direction
+   reverses instantly because the target updates instantly. */
+let targetPos = 0;   // float frame position the scroll wants
+let renderPos = 0;   // float frame position actually shown (chases target)
+let lastTick = performance.now();
+const SMOOTH = 0.12; // catch-up rate per 60Hz tick (higher = snappier)
+
 ScrollTrigger.create({
   trigger: scrollContainer,
   start: "top top",
@@ -112,19 +151,26 @@ ScrollTrigger.create({
   scrub: true,
   onUpdate: (self) => {
     const accelerated = Math.min(self.progress * FRAME_SPEED, 1);
-    const index = Math.min(Math.floor(accelerated * FRAME_COUNT), FRAME_COUNT - 1);
-    if (index !== currentFrame) {
-      currentFrame = index;
-      // Coalesce rapid scroll events into a single draw per animation frame.
-      // A trackpad fires many high-frequency events; without this the canvas
-      // can be asked to redraw several times per frame, causing stutter.
-      if (!drawPending) {
-        drawPending = true;
-        requestAnimationFrame(() => { drawPending = false; drawFrame(currentFrame); });
-      }
-    }
+    targetPos = accelerated * (FRAME_COUNT - 1);
   }
 });
+
+let lastDrawnPos = -1;
+function renderLoop(now) {
+  // dt-normalised lerp so 60Hz and 120Hz displays ease at the same speed
+  const dt = Math.min(now - lastTick, 100);
+  lastTick = now;
+  const k = 1 - Math.pow(1 - SMOOTH, dt / 16.67);
+  renderPos += (targetPos - renderPos) * k;
+  if (Math.abs(targetPos - renderPos) < 0.02) renderPos = targetPos; // settle
+  // redraw whenever the (fractional) position moved meaningfully
+  if (Math.abs(renderPos - lastDrawnPos) > 0.003 && drawFramePos(renderPos)) {
+    lastDrawnPos = renderPos;
+    currentFrame = Math.round(renderPos);
+  }
+  requestAnimationFrame(renderLoop);
+}
+if (!isMobile) requestAnimationFrame(renderLoop);
 
 /* ── HERO REVEAL: simple cross-fade into the film ── */
 ScrollTrigger.create({
