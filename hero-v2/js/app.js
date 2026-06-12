@@ -20,8 +20,7 @@ const loaderPercent = document.getElementById("loader-percent");
 
 const frames = new Array(FRAME_COUNT);
 let currentFrame = -1;
-let bgColor = "#0c0a09";
-let lastSampledBucket = -1;
+let drawPending = false;
 
 /* ── CANVAS SIZING (devicePixelRatio for crisp rendering) ── */
 function sizeCanvas() {
@@ -33,41 +32,19 @@ function sizeCanvas() {
 }
 sizeCanvas();
 
-/* ── BG COLOR SAMPLING from frame corners ── */
-const sampleCanvas = document.createElement("canvas");
-sampleCanvas.width = 32; sampleCanvas.height = 16;
-const sampleCtx = sampleCanvas.getContext("2d", { willReadFrequently: true });
-
-function sampleBgColor(img) {
-  try {
-    sampleCtx.drawImage(img, 0, 0, 32, 16);
-    const corners = [
-      sampleCtx.getImageData(0, 0, 1, 1).data,
-      sampleCtx.getImageData(31, 0, 1, 1).data,
-      sampleCtx.getImageData(0, 15, 1, 1).data,
-      sampleCtx.getImageData(31, 15, 1, 1).data,
-    ];
-    let r = 0, g = 0, b = 0;
-    corners.forEach(c => { r += c[0]; g += c[1]; b += c[2]; });
-    bgColor = `rgb(${Math.round(r / 4)},${Math.round(g / 4)},${Math.round(b / 4)})`;
-  } catch (e) { /* keep previous color */ }
-}
-
-/* ── 6c. CANVAS RENDERER — padded cover mode ── */
+/* ── 6c. CANVAS RENDERER — full-bleed cover mode ──
+   The frame is drawn in cover mode (Math.max scale) so it always fills the
+   whole canvas; no letterbox, so no per-frame pixel sampling is needed. The
+   static fill is just a safety backdrop for any sub-pixel edge. */
 function drawFrame(index) {
   const img = frames[index];
   if (!img || !img.complete || !img.naturalWidth) return;
-
-  const bucket = Math.floor(index / 20);
-  if (bucket !== lastSampledBucket) { lastSampledBucket = bucket; sampleBgColor(img); }
 
   const cw = canvas.width, ch = canvas.height;
   const iw = img.naturalWidth, ih = img.naturalHeight;
   const scale = Math.max(cw / iw, ch / ih) * IMAGE_SCALE;
   const dw = iw * scale, dh = ih * scale;
   const dx = (cw - dw) / 2, dy = (ch - dh) / 2;
-  ctx.fillStyle = bgColor;
-  ctx.fillRect(0, 0, cw, ch);
   ctx.drawImage(img, dx, dy, dw, dh);
 }
 
@@ -138,7 +115,13 @@ ScrollTrigger.create({
     const index = Math.min(Math.floor(accelerated * FRAME_COUNT), FRAME_COUNT - 1);
     if (index !== currentFrame) {
       currentFrame = index;
-      requestAnimationFrame(() => drawFrame(currentFrame));
+      // Coalesce rapid scroll events into a single draw per animation frame.
+      // A trackpad fires many high-frequency events; without this the canvas
+      // can be asked to redraw several times per frame, causing stutter.
+      if (!drawPending) {
+        drawPending = true;
+        requestAnimationFrame(() => { drawPending = false; drawFrame(currentFrame); });
+      }
     }
   }
 });
