@@ -204,6 +204,7 @@ body {
 .hero-heading .word { display: block; overflow: hidden; }
 .hero-heading .word > span { display: inline-block; will-change: transform; }
 .hero-heading .gold > span { color: var(--gold); }
+.tagline-mobile { display: none; }
 .hero-tagline {
   margin-top: 38px;
   font-size: 0.72rem; font-weight: 200; letter-spacing: 0.3em; text-transform: uppercase;
@@ -611,6 +612,18 @@ body {
   .stat .stat-label { text-shadow: 0 1px 10px rgba(0,0,0,0.9); }
   .marquee-text { font-size: 19vw; }
   .hero-heading { font-size: clamp(4rem, 19vw, 6.5rem); }
+
+  /* short subtitle on mobile */
+  .tagline-full { display: none; }
+  .tagline-mobile { display: inline; }
+
+  /* loader EMDEN sits where the hero EMDEN sits (lower third) so the loader
+     blends seamlessly into the first frame instead of jumping up from centre */
+  #loader { justify-content: flex-end; padding-bottom: 14vh; }
+  .loader-brand {
+    position: absolute; left: 0; right: 0; top: 60%;
+    text-align: center;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
