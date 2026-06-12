@@ -577,10 +577,11 @@ body {
     justify-content: flex-end;
     padding-bottom: 15vh;
     background: linear-gradient(180deg,
-      transparent 34%,
-      rgba(8,7,10,0.22) 52%,
-      rgba(8,7,10,0.52) 74%,
-      rgba(8,7,10,0.86) 100%);
+      transparent 30%,
+      rgba(8,7,10,0.25) 48%,
+      rgba(8,7,10,0.7) 66%,
+      rgba(8,7,10,0.95) 84%,
+      #08070a 100%);
   }
   .nav-links, .nav-enquire { display: none; }
   .nav-hamburger { display: flex; }

@@ -270,10 +270,25 @@ document.querySelectorAll(".marquee-wrap").forEach((el) => {
 /* ── 6h. DARK OVERLAY (stats section) ── */
 (function initDarkOverlay(enter, leave) {
   const overlay = document.getElementById("dark-overlay");
-  // On mobile the overlay is the consistent dark background from the very start —
-  // same surface behind the hero title as behind the stats section.
+  // On mobile: keep the hero first-frame airy (overlay near-zero), then ramp
+  // the overlay up to a deep dark by the time the stats (1998) section is in
+  // view, so that section sits on a much darker background.
   if (isMobile) {
-    overlay.style.opacity = "0.05";
+    ScrollTrigger.create({
+      trigger: scrollContainer,
+      start: "top top",
+      end: "bottom bottom",
+      scrub: true,
+      onUpdate: (self) => {
+        const p = self.progress;
+        // 0–10% airy, ramp 10%–24% to near-solid dark, hold through the stats
+        let o;
+        if (p <= 0.10) o = 0.04;
+        else if (p < 0.24) o = 0.04 + ((p - 0.10) / 0.14) * 0.92;
+        else o = 0.96;
+        overlay.style.opacity = o.toFixed(3);
+      }
+    });
     return;
   }
   const fadeRange = 0.04;
