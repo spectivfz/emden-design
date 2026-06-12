@@ -571,10 +571,16 @@ body {
   .scroll-section.section-content { display: none; }
   /* show the looping video behind the hero title (scrim only, for legibility) */
   .hero-standalone {
-    /* push text to the lower third — sits in the natural dark frond zone */
+    /* push text to the lower third; keep top airy and bright like the
+       reference, with a smooth dark gradient through the text zone so the
+       logo always reads cleanly regardless of which video frame is showing */
     justify-content: flex-end;
-    padding-bottom: 13vh;
-    background: linear-gradient(180deg, transparent 38%, rgba(8,7,10,0.28) 62%, rgba(8,7,10,0.72) 100%);
+    padding-bottom: 15vh;
+    background: linear-gradient(180deg,
+      transparent 34%,
+      rgba(8,7,10,0.22) 52%,
+      rgba(8,7,10,0.52) 74%,
+      rgba(8,7,10,0.86) 100%);
   }
   .nav-links, .nav-enquire { display: none; }
   .nav-hamburger { display: flex; }
