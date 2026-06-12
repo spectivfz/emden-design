@@ -255,6 +255,21 @@ body {
   opacity: 0; pointer-events: none;
 }
 
+/* persistent mobile scrim — the hero's bottom gradient on its own layer so it
+   NEVER fades with the hero text; the bottom darkness carries continuously
+   from frame 1 into the stats section and back (no brightness pulse) */
+#hero-scrim {
+  display: none;
+  position: fixed; inset: 0; z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(180deg,
+    transparent 30%,
+    rgba(8,7,10,0.25) 48%,
+    rgba(8,7,10,0.7) 66%,
+    rgba(8,7,10,0.95) 84%,
+    #08070a 100%);
+}
+
 /* ───────── 6. MARQUEE ───────── */
 .marquee-wrap {
   position: fixed; top: 42%; left: 0; right: 0; z-index: 2;
@@ -573,17 +588,13 @@ body {
   /* show the looping video behind the hero title (scrim only, for legibility) */
   .hero-standalone {
     /* push text to the lower third; keep top airy and bright like the
-       reference, with a smooth dark gradient through the text zone so the
-       logo always reads cleanly regardless of which video frame is showing */
+       reference. The dark bottom gradient lives on #hero-scrim (a separate
+       persistent layer) so fading the hero text never lifts the darkness. */
     justify-content: flex-end;
     padding-bottom: 15vh;
-    background: linear-gradient(180deg,
-      transparent 30%,
-      rgba(8,7,10,0.25) 48%,
-      rgba(8,7,10,0.7) 66%,
-      rgba(8,7,10,0.95) 84%,
-      #08070a 100%);
+    background: transparent;
   }
+  #hero-scrim { display: block; }
   .nav-links, .nav-enquire { display: none; }
   .nav-hamburger { display: flex; }
   .disc-cards { grid-template-columns: 1fr 1fr; }

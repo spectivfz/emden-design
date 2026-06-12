@@ -181,10 +181,14 @@ ScrollTrigger.create({
   onUpdate: (self) => {
     const p = self.progress;
     // fade the hero title out, revealing the film beneath. On mobile use a
-    // longer fade so the first frame blends gently into the stats section
-    // rather than snapping off.
-    const heroFade = isMobile ? 0.22 : 0.08;
-    heroSection.style.opacity = Math.max(0, 1 - p / heroFade);
+    // longer, smoothstep-eased fade so the logo melts away gently in both
+    // directions (the bottom gradient itself lives on #hero-scrim and never
+    // fades — only the text goes).
+    const heroFade = isMobile ? 0.26 : 0.08;
+    const t = Math.min(p / heroFade, 1);
+    heroSection.style.opacity = isMobile
+      ? (1 - t * t * (3 - 2 * t)).toFixed(4)
+      : Math.max(0, 1 - t);
     heroSection.style.pointerEvents = p > 0.02 ? "none" : "";
   }
 });
