@@ -407,6 +407,46 @@ document.querySelectorAll(".tile").forEach((t) => {
   t.appendChild(c);
 });
 
+/* ── CUSTOM CURSOR — gold dot + trailing ring (fine pointers only) ── */
+(function () {
+  if (isMobile || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+  const dot = document.createElement("div");
+  dot.id = "cursor-dot";
+  const ring = document.createElement("div");
+  ring.id = "cursor-ring";
+  document.body.append(dot, ring);
+  document.body.classList.add("cursor-on");
+
+  let mx = -100, my = -100;  // mouse (dot follows instantly)
+  let rx = -100, ry = -100;  // ring (eases after)
+
+  window.addEventListener("mousemove", (e) => {
+    mx = e.clientX; my = e.clientY;
+    document.body.classList.add("cursor-active");
+  }, { passive: true });
+  document.addEventListener("mouseleave", () => document.body.classList.remove("cursor-active"));
+  window.addEventListener("mousedown", () => document.body.classList.add("cursor-down"));
+  window.addEventListener("mouseup", () => document.body.classList.remove("cursor-down"));
+
+  // grow the ring over interactive elements; hide over text fields
+  const HOT = "a, button, .disc-card, .tile, .nav-hamburger, label";
+  document.addEventListener("mouseover", (e) => {
+    const t = e.target;
+    document.body.classList.toggle("cursor-link", !!t.closest(HOT));
+    document.body.classList.toggle("cursor-typing",
+      !!t.closest("input, textarea, select"));
+  }, { passive: true });
+
+  (function cursorLoop() {
+    rx += (mx - rx) * 0.16;
+    ry += (my - ry) * 0.16;
+    dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
+    ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
+    requestAnimationFrame(cursorLoop);
+  })();
+})();
+
 /* ── ENQUIRY FORM (FormSubmit.co AJAX — no account needed) ── */
 (function () {
   const form = document.getElementById("enquiry-form");

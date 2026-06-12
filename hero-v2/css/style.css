@@ -416,9 +416,9 @@ body {
 .c-img {
   position: absolute; inset: 0; background-size: cover; background-position: center;
   transition: transform 1.2s var(--ease-out), filter 1s;
-  filter: grayscale(.5) brightness(.62);
+  filter: grayscale(.3) brightness(.78);
 }
-.disc-card:hover .c-img { transform: scale(1.08); filter: grayscale(0) brightness(.78); }
+.disc-card:hover .c-img { transform: scale(1.08); filter: grayscale(0) brightness(.9); }
 .disc-card::after {
   content: ""; position: absolute; inset: 0;
   background: linear-gradient(transparent 35%, rgba(12,10,9,.9));
@@ -697,7 +697,43 @@ body {
   /* enquiry form stacks on mobile */
   .enquiry-form { grid-template-columns: 1fr; gap: 30px; margin-top: 44px; }
   .stats-cta .cta-button { padding: 16px 38px; }
+
+  /* gallery captions are hover-only on desktop — show them statically on touch */
+  .tile .cap { opacity: 1; transform: none; }
+  .tile::after { opacity: 1; }
 }
+
+/* ───────── CUSTOM CURSOR (fine pointers only) ───────── */
+@media (hover: hover) and (pointer: fine) {
+  body.cursor-on, body.cursor-on a, body.cursor-on button,
+  body.cursor-on .disc-card, body.cursor-on .tile { cursor: none; }
+  body.cursor-on input, body.cursor-on textarea, body.cursor-on select { cursor: auto; }
+}
+#cursor-dot, #cursor-ring {
+  position: fixed; top: 0; left: 0; z-index: 2000;
+  border-radius: 50%; pointer-events: none;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+}
+#cursor-dot {
+  width: 5px; height: 5px;
+  background: var(--amber);
+  transition: opacity 0.35s ease;
+}
+#cursor-ring {
+  width: 34px; height: 34px;
+  border: 1px solid rgba(203, 154, 78, 0.5);
+  transition: opacity 0.35s ease,
+              width 0.35s var(--ease-out), height 0.35s var(--ease-out),
+              border-color 0.3s ease;
+}
+body.cursor-active #cursor-dot, body.cursor-active #cursor-ring { opacity: 1; }
+body.cursor-link #cursor-ring {
+  width: 56px; height: 56px;
+  border-color: rgba(203, 154, 78, 0.85);
+}
+body.cursor-down #cursor-ring { width: 28px; height: 28px; }
+body.cursor-typing #cursor-dot, body.cursor-typing #cursor-ring { opacity: 0; }
 
 @media (prefers-reduced-motion: reduce) {
   .scroll-indicator .arrow::after { animation: none; }
