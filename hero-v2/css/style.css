@@ -185,7 +185,7 @@ body {
     radial-gradient(100% 70% at 80% -10%, rgba(19, 16, 14, 0.9), transparent 60%),
     var(--ink);
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  text-align: center; padding: 0 6vw;
+  text-align: center; padding: 0 6vw 70px;
 }
 .section-label {
   display: block;
