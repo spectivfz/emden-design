@@ -151,9 +151,11 @@ ScrollTrigger.create({
   scrub: true,
   onUpdate: (self) => {
     const p = self.progress;
-    // fade the hero title out over the first ~8% of scroll, revealing the film
-    // (already in motion as the frames advance) beneath it.
-    heroSection.style.opacity = Math.max(0, 1 - p / 0.08);
+    // fade the hero title out, revealing the film beneath. On mobile use a
+    // longer fade so the first frame blends gently into the stats section
+    // rather than snapping off.
+    const heroFade = isMobile ? 0.22 : 0.08;
+    heroSection.style.opacity = Math.max(0, 1 - p / heroFade);
     heroSection.style.pointerEvents = p > 0.02 ? "none" : "";
   }
 });
@@ -281,13 +283,20 @@ document.querySelectorAll(".marquee-wrap").forEach((el) => {
       scrub: true,
       onUpdate: (self) => {
         const p = self.progress;
-        // 0–10% airy, ramp 10%–24% to fully solid #08070a — the exact colour
-        // the hero bottom gradient fades into, so frame 1 flows seamlessly into
-        // the stats section background with no visible seam.
+        // Smoothly blend the airy first frame into the stats section. Hold a
+        // mid darkness so the video still breathes through behind 1998.
+        // 0–8% airy, then a long eased (smoothstep) ramp to 0.6, hold 0.6.
+        const HOLD = 0.6;
         let o;
-        if (p <= 0.10) o = 0.04;
-        else if (p < 0.24) o = 0.04 + ((p - 0.10) / 0.14) * 0.96;
-        else o = 1;
+        if (p <= 0.08) {
+          o = 0.04;
+        } else if (p < 0.5) {
+          const t = (p - 0.08) / 0.42;          // 0..1 across the blend
+          const eased = t * t * (3 - 2 * t);    // smoothstep for a soft curve
+          o = 0.04 + eased * (HOLD - 0.04);
+        } else {
+          o = HOLD;
+        }
         overlay.style.opacity = o.toFixed(3);
       }
     });

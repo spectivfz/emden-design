@@ -606,6 +606,9 @@ body {
   .section-content .section-body { font-size: 0.8rem; line-height: 1.65; }
   .section-content .section-label { font-size: 0.56rem; letter-spacing: 0.3em; }
   .stats-grid { grid-template-columns: 1fr 1fr; gap: 40px 16px; }
+  /* video stays visible behind the stats, so shadow the text for legibility */
+  .stat-number, .stat-suffix { text-shadow: 0 2px 18px rgba(0,0,0,0.85), 0 1px 4px rgba(0,0,0,0.9); }
+  .stat .stat-label { text-shadow: 0 1px 10px rgba(0,0,0,0.9); }
   .marquee-text { font-size: 19vw; }
   .hero-heading { font-size: clamp(4rem, 19vw, 6.5rem); }
 }
